@@ -1,0 +1,13 @@
+{
+    "python.pythonPath": "C:\\Users\\Setht\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "[python]": {
+        
+
+
+        "gitlens.codeLens.symbolScopes": [
+            "!Module"
+        ]
+    },
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pylintEnabled": true
+}
