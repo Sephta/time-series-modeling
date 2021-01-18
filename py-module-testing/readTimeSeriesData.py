@@ -10,6 +10,8 @@ def main():
     else:
         readCSV = pd.read_csv('./py-module-testing/test.csv')
         print(readCSV)
+        # with open("filetest.txt", 'wr') as file:
+        #     pd.DataFrame.to_csv(file)
 
 
 main()
