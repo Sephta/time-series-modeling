@@ -6,6 +6,10 @@ def operator():
     return "Operator Function"
 
 
+def denoise():
+    return "Operator Function"
+
+
 def generate_tree():
     rootNode = Node(operator)
     tree = TTree("test", rootNode)
@@ -18,10 +22,13 @@ def generate_tree():
     # tree.add_path(tree.root, [a, b, c])
 
     tree.add_path(tree.root,
-                  [Node(operator),
+                  [a,
+                   Node(denoise),
                    Node(operator),
-                   Node(operator),
-                   Node(operator)])
+                   Node(denoise)])
+
+    tree.add_path_byname("operator", [Node(denoise), Node(denoise)])
+    # Takes non-list of Nodes
 
     # tree.add_path("d")
 
