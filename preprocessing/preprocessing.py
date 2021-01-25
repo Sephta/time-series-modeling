@@ -8,6 +8,9 @@ Project One: Time Series Analysis
 
 Utility: preprocessing functions for reading data files
 and preparing for visualization.
+
+Note: pandas and sklearn must be downloaded in order to use this 
+software. 
 """
 
 # import statements below
@@ -51,5 +54,68 @@ def longest_continuous_run(list: ts):
     the time series list without any missing
     or blank data. Returns a time series. Uses
     scikit ML modules to search through list. """
+
+    return "Not implemented yet"
+
+
+def clip(list: ts, tuple: starting_date, tuple: final_date):
+    """ Removes parts of the time series that
+    fall outside of the start date and end date. """
+
+    return "Not implemented yet"
+
+
+def assign_time(list: ts, tuple: start, int: increment):
+    """ Assign times with a sequence of readings, 
+    beginning with start time and separating times
+    by the increment value. """
+
+    return "Not implemented yet"
+
+
+def differences(list: ts):
+    """ Returns a time series with magnitudes
+    equivalent to the amount of space between
+    consecutive elements in the original time
+    series.  """
+
+    return "Not implemented yet"
+
+
+def scaling(list: ts):
+    """ Returns a time series whose magnitudes
+    are scaled so resulting magnitudes range
+    fall inside of [0,1] """
+
+    return "Not implemented yet"
+
+
+def standardize(list: ts):
+    """ Returns a time series whose mean
+    is 0 and variance is 1. """
+
+    return "Not implemented yet"
+
+
+def logarithm(list: ts):
+    """ Returns a time series whose elements are
+    the logarithm of the original elements. """
+
+    return "Not implemented yet"
+
+
+def cubic_root(list: ts):
+    """ Returns a time series whose
+    elements are the cubic root of 
+    each of the original elements. """
+
+    return "Not implemented yet"
+
+
+def split_data(list: ts, float: perc_training, float: perc_valid,
+               float: perc_test):
+    """ Returns a time series separated into training, 
+    validation, and testing according to the specified
+    percentages. """
 
     return "Not implemented yet"
