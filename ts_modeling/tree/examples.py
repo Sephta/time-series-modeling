@@ -28,6 +28,7 @@ def generate_tree():
                    Node(denoise)])
 
     tree.add_path_byname("operator", [Node(denoise), Node(denoise)])
+    tree.add_path_byid(0, [Node(denoise), Node(denoise)])
     # Takes non-list of Nodes
 
     # tree.add_path("d")

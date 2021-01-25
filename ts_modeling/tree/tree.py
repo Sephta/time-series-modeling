@@ -9,8 +9,7 @@ Transformation Tree object
         > add_nodes_byid (target_id, [Node] or Node)
 
         adding list of nodes as a path from target...
-        > add_paths_byname (target_name, [Node] or Node)
-        > add_paths_byid (target_id, [Node] or Node)
+        > add_path_byid (target_id, [Node] or Node)
 
         > get_all_nodes_oftype(op_name) # this returns all operators in
         the of specified type
@@ -62,7 +61,6 @@ class TTree():
         """For use inside of the TTree() class only.
         Sets a node's IDs"""
         node.set_id(self.id_iterator)
-        print(node.id, node.name)
         self.id_iterator += 1
 
     def print(self, id=False):
@@ -75,7 +73,7 @@ class TTree():
             print(treestr.ljust(8))
 
     def __add_path_byref(self, target: Node, path: [Node]):
-        """PRIVATE: Helper function for adding paths by reference to 
+        """PRIVATE: Helper function for adding paths by reference to
         target node"""
         path[0].set_parent(target)
         self.set_id(path[0])
@@ -103,6 +101,18 @@ class TTree():
         targets = [node for node in PostOrderIter(self.root,
                                                   filter_=lambda n:
                                                   n.name == target_name)]
+        for target in targets:
+            # Need to make copy of path, otherwise anytree will move the path
+            # to a new target on each iteration (bc the refs haven't changed)
+            path_copy = copy_nodes(path)
+            self.__add_path_byref(target, path_copy)
+
+    def add_path_byid(self, target_id: int, path: Union[Node, [Node]]):
+        if(type(path) is not list):  # Allows single node as parameter
+            path = [path]
+        targets = [node for node in PostOrderIter(self.root,
+                                                  filter_=lambda n:
+                                                  n.id == target_id)]
         for target in targets:
             # Need to make copy of path, otherwise anytree will move the path
             # to a new target on each iteration (bc the refs haven't changed)
