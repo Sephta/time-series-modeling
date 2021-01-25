@@ -9,8 +9,8 @@ __credits__ = "Kyra Novitzky, Ronny Fuentes, Stephanie Schofield"
 __date__ = "01/24/2021"
 
 
-def copy_nodes(nodes):
+def copy_path(path):
     copy = []
-    for node in nodes:
+    for node in path:
         copy.append(node.copy())
     return copy

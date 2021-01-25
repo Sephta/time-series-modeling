@@ -8,11 +8,10 @@ Transformation Tree object
         > add_nodes_byname (target_name, [Node] or Node)
         > add_nodes_byid (target_id, [Node] or Node)
 
-        adding list of nodes as a path from target...
-        > add_path_byid (target_id, [Node] or Node)
-
-        > get_all_nodes_oftype(op_name) # this returns all operators in
-        the of specified type
+        > get_all_nodes_oftype(op_name) # this returns all operators of
+          specified type
+        
+        > reparent nodes in the tree
 """
 from __future__ import annotations
 from anytree import NodeMixin, RenderTree, render, PostOrderIter
@@ -46,6 +45,9 @@ class Node(NodeMixin):
         self.parent = parent
         return self.parent
 
+    def set_children(self, children):
+        self.children = children
+
     def copy(self):
         return Node(self.function, self.parent, self.children)
 
@@ -72,7 +74,7 @@ class TTree():
                 treestr = u"%s%s" % (pre, node.name)
             print(treestr.ljust(8))
 
-    def __add_path_byref(self, target: Node, path: [Node]):
+    def __add_newpath_byref(self, target: Node, path: [Node]):
         """PRIVATE: Helper function for adding paths by reference to
         target node"""
         path[0].set_parent(target)
@@ -81,40 +83,51 @@ class TTree():
             path[i].set_parent(path[i-1])
             self.set_id(path[i])
 
-    def add_path(self, target: Node, path: Union[Node, [Node]]):
+    def add_newpath(self, target: Node, path: Union[Node, [Node]]):
         """Builds a path starting with target node, and iterating through path,
         inserting these nodes as children of eachother
         (starting with target)"""
         if(type(path) is not list):  # Allows single node as parameter
             path = [path]
-        self.__add_path_byref(target, path)
+        for node in path:
+            if node.id:
+                # Throw error
+                raise Exception("Nodes within new path cannot be contained in the tree already.")
+        self.__add_newpath_byref(target, path)
 
-    def add_path_byname(self, target_name: str, path: Union[Node, [Node]]):
-        """Builds a path starting with target node, and iterating through path,
-        inserting these nodes as children of eachother
-        (starting with target)
+    # ! We need to come back to this
+    # def add_newpath_byname(self, target_name: str, path: Union[Node, [Node]]):
+    #     """Builds a path starting with target node, and iterating through path,
+    #     inserting these nodes as children of eachother
+    #     (starting with target)
 
-        Note: User will lose references to original path (need to make copy)
-        """
+    #     Note: User will lose references to original path (need to make copy)
+    #     """
+    #     if(type(path) is not list):  # Allows single node as parameter
+    #         path = [path]
+    #     targets = [node for node in PostOrderIter(self.root,
+    #                                               filter_=lambda n:
+    #                                               n.name == target_name)]
+    #     for target in targets:
+    #         # Need to make copy of path, otherwise anytree will move the path
+    #         # to a new target on each iteration (bc the refs haven't changed)
+    #         path_copy = copy_path(path)
+    #         self.__add_newpath_byref(target, path_copy)
+
+    def add_newpath_byid(self, target_id: int, path: Union[Node, [Node]]):
         if(type(path) is not list):  # Allows single node as parameter
             path = [path]
-        targets = [node for node in PostOrderIter(self.root,
-                                                  filter_=lambda n:
-                                                  n.name == target_name)]
-        for target in targets:
-            # Need to make copy of path, otherwise anytree will move the path
-            # to a new target on each iteration (bc the refs haven't changed)
-            path_copy = copy_nodes(path)
-            self.__add_path_byref(target, path_copy)
 
-    def add_path_byid(self, target_id: int, path: Union[Node, [Node]]):
-        if(type(path) is not list):  # Allows single node as parameter
-            path = [path]
+        for node in path:
+            if node.id:
+                # Throw error
+                raise Exception("Nodes within new path cannot be contained in the tree already.")
+
         targets = [node for node in PostOrderIter(self.root,
                                                   filter_=lambda n:
                                                   n.id == target_id)]
+
         for target in targets:
             # Need to make copy of path, otherwise anytree will move the path
             # to a new target on each iteration (bc the refs haven't changed)
-            path_copy = copy_nodes(path)
-            self.__add_path_byref(target, path_copy)
+            self.__add_newpath_byref(target, path)
