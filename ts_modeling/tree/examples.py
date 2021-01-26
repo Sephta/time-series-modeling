@@ -31,6 +31,7 @@ def generate_tree_test():
     tree = TTree("test", rootNode)
     a = Node(_a)
     b = Node(_b)
+    c = Node(_b)
 
     # print('\n')
     # print(rootNode.children)

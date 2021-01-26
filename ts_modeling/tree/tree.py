@@ -101,16 +101,19 @@ class TTree():
                 # set parent of new node
                 new_node.set_parent(target)
 
-                # add new node as child of target
-                # if target.children:
-                #     target.children.append(new_node)
-                # else:
-                #     target.children = [new_node]
-
                 # update tree to contain new node
                 self.__nodes.append(new_node)
                 # Set the runtime ID of the new Node
                 self.set_id(new_node)
+            else:
+                raise Exception("New Node cannot be added to target " \
+                                "because target is not associated " \
+                                "with this tree.")
+        else:
+            if not target:
+                raise Exception("Target is None")
+            elif not new_node:
+                raise Exception("Node being added is None")
         pass
 
     def add_nodes(self, target: Node, nodes: [Node]):
