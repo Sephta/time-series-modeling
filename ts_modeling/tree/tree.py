@@ -9,7 +9,7 @@ Transformation Tree object
         > add_nodes_byid (target_id, [Node] or Node)
 
         > get_all_nodes_oftype(op_name) # this returns all operators of
-          specified type
+          specified type as a list
         
         > reparent nodes in the tree
 """
@@ -34,6 +34,11 @@ class Node(NodeMixin):
         self.id = None  # Private
         if children is not None:
             self.children = children
+
+    def __repr__(self):
+        """__repr__ allows us to define the default string representation
+        of this class"""
+        return 'Operator: {}'.format(self.name)
 
     def set_id(self, id):
         self.id = id
@@ -70,7 +75,7 @@ class TTree():
         node.set_id(self.id_iterator)
         self.id_iterator += 1
 
-    def print(self, id=False):
+    def print_tree(self, id=False):
         """Prints a visual representation of the tree"""
         for pre, fill, node in RenderTree(self.root):
             if(id):
@@ -78,6 +83,9 @@ class TTree():
             else:
                 treestr = u"%s%s" % (pre, node.name)
             print(treestr.ljust(8))
+    
+    def print_nodes_as_list(self):
+        print(self.__nodes)
     
     def add_node(self, target: Node, new_node: Node):
         # if either arg is not null

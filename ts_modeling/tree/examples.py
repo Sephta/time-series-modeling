@@ -33,7 +33,9 @@ def generate_tree_test():
     tree.add_node(rootNode, a)
     tree.add_node(rootNode, b)
 
-    tree.print(id=True)
+    tree.print_nodes_as_list()
+
+    tree.print_tree(id=True)
 
 def saving_tree_test():
     # For now user should start by creating a root node
@@ -58,7 +60,7 @@ def saving_tree_test():
 
     print('\n')
     print("Confirm that tree matches example code:")
-    tree_to_save.print(True)
+    tree_to_save.print_tree(True)
     print('\n')
 
     from anytree.exporter import JsonExporter
@@ -74,5 +76,5 @@ def saving_tree_test():
         print('\n')
 
 
-# generate_tree_test()
-saving_tree_test()
+generate_tree_test()
+# saving_tree_test()
