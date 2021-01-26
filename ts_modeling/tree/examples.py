@@ -24,26 +24,14 @@ def generate_tree_test():
     rootNode = Node(root)
     tree = TTree("test", rootNode)
     a = Node(_a)
-    # b = Node(operator)
-    # c = Node(operator)
-    # denoise_op2 = Node(operator)
-    # denoise_op1 = Node(operator)
+    b = Node(_b)
 
-    # tree.add_path(tree.root, [a, b, c])
+    # print('\n')
+    # print(rootNode.children)
+    # print('\n')
 
-    tree.add_newpath(tree.root,
-                  [a,
-                   Node(_b),
-                   Node(_b),
-                   Node(_b)])
-
-    tree.add_newpath(rootNode, Node(_b))
-    
-    # print(a.get_id())
-
-    # tree.add_newpath_byid(5, a)
-    newA = Node(_a)
-    tree.add_newpath_byid(5, newA)
+    tree.add_node(rootNode, a)
+    tree.add_node(rootNode, b)
 
     tree.print(id=True)
 
@@ -59,8 +47,8 @@ def saving_tree_test():
     tree_to_save = TTree("root", root_node)
 
     # Then add nodes to the tree
-    tree_to_save.add_newpath(root_node, [a_node])
-    tree_to_save.add_newpath(root_node, [b_node])
+    tree_to_save.add_node(root_node, a_node)
+    tree_to_save.add_node(root_node, b_node)
     
     """ Tree in this example looks like this...
     *    root (0)
@@ -75,6 +63,8 @@ def saving_tree_test():
 
     from anytree.exporter import JsonExporter
 
+    # The default lambda expression tells json what the default value of an objects stuff should
+    # be if the value cannot be serialized
     js_exporter = JsonExporter(indent=2, sort_keys=True, default=lambda o: '<not serializable>')
 
     with open("./ts_modeling/saved_trees/tree_to_save.json", 'w') as js_file:

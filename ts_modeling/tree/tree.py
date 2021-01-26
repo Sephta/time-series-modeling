@@ -32,7 +32,7 @@ class Node(NodeMixin):
         self.function = function
         self.parent = parent
         self.id = None  # Private
-        if children:
+        if children is not None:
             self.children = children
 
     def set_id(self, id):
@@ -53,11 +53,16 @@ class Node(NodeMixin):
 
 
 class TTree():
-    def __init__(self, name: str, root: Node = None):
+    def __init__(self, name: str, root: Node):
         self.name = name
         self.root = root
         self.root.set_id(0)
         self.id_iterator = 1
+        
+        # self.__nodes is just a list containing references of every node in the tree
+        # It is just a nice little helper attribute (ez way to check if nodes are
+        # contained in the tree)
+        self.__nodes = [root]
 
     def set_id(self, node: Node):
         """For use inside of the TTree() class only.
@@ -75,6 +80,23 @@ class TTree():
             print(treestr.ljust(8))
     
     def add_node(self, target: Node, new_node: Node):
+        # if either arg is not null
+        if target and new_node:
+            # if target is contained within the tree
+            if target in self.__nodes:
+                # set parent of new node
+                new_node.set_parent(target)
+                
+                # add new node as child of target
+                # if target.children:
+                #     target.children.append(new_node)
+                # else:
+                #     target.children = [new_node]
+
+                # update tree to contain new node
+                self.__nodes.append(new_node)
+                # Set the runtime ID of the new Node
+                self.set_id(new_node)
         pass
 
     def add_nodes(self, target: Node, nodes: [Node]):
