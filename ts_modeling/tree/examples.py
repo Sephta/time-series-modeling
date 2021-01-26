@@ -83,11 +83,6 @@ def saving_tree_test():
         print(js_exporter.export(tree_to_save.root))
         print('\n')
 
-
-# generate_tree_test()
-# saving_tree_test()
-
-
 def testpickle():
     # For now user should start by creating a root node
     root_node = Node(root)
@@ -106,10 +101,13 @@ def testpickle():
 
     del a_node
 
+    with open("./ts_modeling/saved_trees/test_pickle.pickle", 'rb') as handle:
+        tree = pickle.load(handle)
 
+    tree.print_tree(id=True)
+    print(tree.root.function())
+
+
+# generate_tree_test()
+# saving_tree_test()
 testpickle()
-with open("./ts_modeling/saved_trees/test_pickle.pickle", 'rb') as handle:
-    tree = pickle.load(handle)
-
-tree.print_tree(id=True)
-print(tree.root.function())
