@@ -20,6 +20,9 @@ def _a():
 def _b():
     return "Executing Operator b"
 
+def test_func():
+        return "Hello World"
+
 
 """ Test functions
     * literally just here to test certain types of functionality
@@ -84,7 +87,7 @@ def saving_tree_test():
         print(js_exporter.export(tree_to_save.root))
         print('\n')
 
-def testpickle():
+def pickle_test():
     # For now user should start by creating a root node
     root_node = Node(root)
 
@@ -97,18 +100,29 @@ def testpickle():
     tree_to_save.add_node(root_node, a_node)
     tree_to_save.add_node(root_node, b_node)
 
-    with open("./ts_modeling/saved_trees/test_pickle.pickle", 'wb') as handle:
-        pickle.dump(tree_to_save, handle)
+    # with open("./ts_modeling/saved_trees/test_pickle.pickle", 'wb') as handle:
+    #     pickle.dump(tree_to_save, handle)
 
-    del a_node
+    # with open("./ts_modeling/saved_trees/test_pickle.pickle", 'rb') as handle:
+    #     tree = pickle.load(handle)
 
-    with open("./ts_modeling/saved_trees/test_pickle.pickle", 'rb') as handle:
-        tree = pickle.load(handle)
+    # tree.print_tree(id=True)
+    # print(tree.root.function())
+    
+    test_func_node = Node(test_func)
+    tree_to_save.add_node(root_node, test_func_node)
 
-    tree.print_tree(id=True)
-    print(tree.root.function())
+    tree_to_save.print_tree(id=True)
+
+    with open("./ts_modeling/saved_trees/test_pickle.pickle", 'wb') as file:
+        pickle.dump(tree_to_save, file)
+
+    with open("./ts_modeling/saved_trees/test_pickle.pickle", 'rb') as file:
+        loaded_tree = pickle.load(file)
+    
+    loaded_tree.print_tree(id=True)
 
 
-generate_tree_test()
+# generate_tree_test()
 # saving_tree_test()
-# testpickle()
+pickle_test()
