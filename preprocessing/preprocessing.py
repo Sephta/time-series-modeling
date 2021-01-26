@@ -119,3 +119,25 @@ def split_data(list: ts, float: perc_training, float: perc_valid,
     percentages. """
 
     return "Not implemented yet"
+
+
+def design_matrix(list: ts, int: input_index, int: output_index):
+    """ Creates a forecasing model based on the input
+    and output specified in input_index and output_index. 
+    The output index indicated how many predictions 
+    are necessary and their distance from each
+    other. """
+
+    return "Not implemented yet"
+
+
+def ts2db(string: input_filename, float: perc_training,
+          float: perc_valid, float: perc_test,
+          int: input_index, int: output_index,
+          string: output_file_name):
+    """ Function reads an input file, splits data into
+    training, validation, and testing according to
+    percentages, and converts to a database in the
+    form of an output file. """
+
+    return "Not implemented yet"
