@@ -63,7 +63,7 @@ class TTree():
         self.root = root
         self.root.set_id(0)
         self.id_iterator = 1
-        
+
         # self.__nodes is just a list containing references of every node in the tree
         # It is just a nice little helper attribute (ez way to check if nodes are
         # contained in the tree)
@@ -83,10 +83,10 @@ class TTree():
             else:
                 treestr = u"%s%s" % (pre, node.name)
             print(treestr.ljust(8))
-    
+
     def print_nodes_as_list(self):
         print(self.__nodes)
-    
+
     def add_node(self, target: Node, new_node: Node):
         # if either arg is not null
         if target and new_node:
@@ -94,7 +94,7 @@ class TTree():
             if target in self.__nodes:
                 # set parent of new node
                 new_node.set_parent(target)
-                
+
                 # add new node as child of target
                 # if target.children:
                 #     target.children.append(new_node)
@@ -131,7 +131,8 @@ class TTree():
         for node in path:
             if node.id:
                 # Throw error
-                raise Exception("Nodes within new path cannot be contained in the tree already.")
+                raise Exception(
+                    "Nodes within new path cannot be contained in the tree already.")
         self.__add_newpath_byref(target, path)
 
     # ! We need to come back to this
@@ -160,7 +161,8 @@ class TTree():
         for node in path:
             if node.id:
                 # Throw error
-                raise Exception("Nodes within new path cannot be contained in the tree already.")
+                raise Exception(
+                    "Nodes within new path cannot be contained in the tree already.")
 
         targets = [node for node in PostOrderIter(self.root,
                                                   filter_=lambda n:
