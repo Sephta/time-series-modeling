@@ -31,6 +31,7 @@ def generate_tree_test():
     tree = TTree("test", rootNode)
     a = Node(_a)
     b = Node(_b)
+    c = Node(_b)
 
     # print('\n')
     # print(rootNode.children)
@@ -38,6 +39,7 @@ def generate_tree_test():
 
     tree.add_node(rootNode, a)
     tree.add_node(rootNode, b)
+    tree.add_node(c, a)
 
     tree.print_nodes_as_list()
 
@@ -108,6 +110,6 @@ def testpickle():
     print(tree.root.function())
 
 
-# generate_tree_test()
+generate_tree_test()
 # saving_tree_test()
-testpickle()
+# testpickle()
