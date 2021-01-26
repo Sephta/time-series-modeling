@@ -39,7 +39,6 @@ def generate_tree_test():
 
     tree.add_node(rootNode, a)
     tree.add_node(rootNode, b)
-    tree.add_node(c, a)
 
     tree.print_nodes_as_list()
 

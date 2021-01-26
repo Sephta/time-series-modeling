@@ -95,12 +95,6 @@ class TTree():
                 # set parent of new node
                 new_node.set_parent(target)
 
-                # add new node as child of target
-                # if target.children:
-                #     target.children.append(new_node)
-                # else:
-                #     target.children = [new_node]
-
                 # update tree to contain new node
                 self.__nodes.append(new_node)
                 # Set the runtime ID of the new Node
