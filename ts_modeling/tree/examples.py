@@ -1,4 +1,4 @@
-from tree import Node, TTree
+from tree import Node, TTree, load_tree
 from anytree import NodeMixin, RenderTree, render
 import pickle
 
@@ -88,7 +88,7 @@ def saving_tree_test():
 # saving_tree_test()
 
 
-def testpickle():
+def save_tree():
     # For now user should start by creating a root node
     root_node = Node(root)
 
@@ -97,19 +97,20 @@ def testpickle():
     b_node = Node(_b)
 
     # Then user should create a tree and initialize it with a root node
-    tree_to_save = TTree("root", root_node)
-    tree_to_save.add_node(root_node, a_node)
-    tree_to_save.add_node(root_node, b_node)
+    tree = TTree("root", root_node)
+    tree.add_node(root_node, a_node)
+    tree.add_node(root_node, b_node)
 
-    with open("./ts_modeling/saved_trees/test_pickle.pickle", 'wb') as handle:
-        pickle.dump(tree_to_save, handle)
-
-    del a_node
+    tree.save("./ts_modeling/saved_trees/test_pickle.pickle")
+    return
 
 
-testpickle()
-with open("./ts_modeling/saved_trees/test_pickle.pickle", 'rb') as handle:
-    tree = pickle.load(handle)
+def load_and_print_tree():
+    loaded_tree = load_tree("./ts_modeling/saved_trees/test_pickle.pickle")
+    loaded_tree.print_tree(id=True)
+    # Executes saved function
+    print(loaded_tree.root.function())
 
-tree.print_tree(id=True)
-print(tree.root.function())
+
+save_tree()
+load_and_print_tree()

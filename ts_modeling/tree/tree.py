@@ -10,13 +10,14 @@ Transformation Tree object
 
         > get_all_nodes_oftype(op_name) # this returns all operators of
           specified type as a list
-        
+
         > reparent nodes in the tree
 """
 from __future__ import annotations
 from anytree import NodeMixin, RenderTree, render, PostOrderIter
 from typing import List, Callable, Union
 from tree_helpers import *
+import pickle
 
 __authors__ = "Alec Springel, Seth Tal"
 __version__ = "1.0.0"
@@ -68,6 +69,11 @@ class TTree():
         # It is just a nice little helper attribute (ez way to check if nodes are
         # contained in the tree)
         self.__nodes = [root]
+
+    def save(self, file: str):
+        """Saves tree to as serialized object to specified file path"""
+        with open(file, 'wb') as handle:
+            pickle.dump(self, handle)
 
     def set_id(self, node: Node):
         """For use inside of the TTree() class only.
@@ -131,8 +137,8 @@ class TTree():
         for node in path:
             if node.id:
                 # Throw error
-                raise Exception(
-                    "Nodes within new path cannot be contained in the tree already.")
+                raise Exception("Nodes within new path cannot be "
+                                "contained in the tree already.")
         self.__add_newpath_byref(target, path)
 
     # ! We need to come back to this
@@ -157,13 +163,11 @@ class TTree():
     def add_newpath_byid(self, target_id: int, path: Union[Node, [Node]]):
         if(type(path) is not list):  # Allows single node as parameter
             path = [path]
-
+        # If any node in the new path is already contained in tree, throw error
         for node in path:
             if node.id:
-                # Throw error
                 raise Exception(
                     "Nodes within new path cannot be contained in the tree already.")
-
         targets = [node for node in PostOrderIter(self.root,
                                                   filter_=lambda n:
                                                   n.id == target_id)]
@@ -172,3 +176,10 @@ class TTree():
             # Need to make copy of path, otherwise anytree will move the path
             # to a new target on each iteration (bc the refs haven't changed)
             self.__add_newpath_byref(target, path)
+
+
+def load_tree(file: str) -> TTree:
+    """Loads tree as python object from specified file path"""
+    with open(file, 'rb') as handle:
+        tree = pickle.load(handle)
+    return tree
