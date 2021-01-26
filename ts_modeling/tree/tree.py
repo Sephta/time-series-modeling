@@ -73,6 +73,15 @@ class TTree():
             else:
                 treestr = u"%s%s" % (pre, node.name)
             print(treestr.ljust(8))
+    
+    def add_node(self, target: Node, new_node: Node):
+        pass
+
+    def add_nodes(self, target: Node, nodes: [Node]):
+        pass
+
+    def add_nodes_byname(self, operator: str, nodes: [Node]):
+        pass
 
     def __add_newpath_byref(self, target: Node, path: [Node]):
         """PRIVATE: Helper function for adding paths by reference to
