@@ -100,27 +100,49 @@ def pickle_test():
     tree_to_save.add_node(root_node, a_node)
     tree_to_save.add_node(root_node, b_node)
 
-    # with open("./ts_modeling/saved_trees/test_pickle.pickle", 'wb') as handle:
-    #     pickle.dump(tree_to_save, handle)
-
-    # with open("./ts_modeling/saved_trees/test_pickle.pickle", 'rb') as handle:
-    #     tree = pickle.load(handle)
-
-    # tree.print_tree(id=True)
-    # print(tree.root.function())
+    # tests if pickle will serialize locally scoped functions
+    # (it doesn't)
+    def test_func2():
+        return "hello world 2"
+    
+    # tests to see if pickle will serialize the function 
+    # contained in the class "Test_func_class"
+    test_func3 = Test_func_class()
     
     test_func_node = Node(test_func)
+    # test_func2_node = Node(test_func2)
+    # test_func3_node = Node(test_func3.test_func)
+    
+    
     tree_to_save.add_node(root_node, test_func_node)
+    # tree_to_save.add_node(root_node, test_func2_node)
+    # tree_to_save.add_node(root_node, test_func3_node)
 
+    # print tree before saving to pickle file
     tree_to_save.print_tree(id=True)
 
-    with open("./ts_modeling/saved_trees/test_pickle.pickle", 'wb') as file:
-        pickle.dump(tree_to_save, file)
+    # location of the pickle file to save/load from
+    pickle_file_location = "./ts_modeling/saved_trees/test_pickle.pickle"
 
-    with open("./ts_modeling/saved_trees/test_pickle.pickle", 'rb') as file:
-        loaded_tree = pickle.load(file)
+    # saves tree object to file located at specified string
+    tree_to_save.save(pickle_file_location)
+
+    from tree import load_tree
+
+    # loads tree object from pickle file
+    loaded_tree = load_tree(pickle_file_location)
     
+    # print loaded tree to see if 'tree_to_save' matches
     loaded_tree.print_tree(id=True)
+
+
+class Test_func_class():
+
+    def __init__(self):
+        pass
+
+    def test_func(self):
+        return "Hello World"
 
 
 # generate_tree_test()
