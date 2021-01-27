@@ -31,7 +31,6 @@ def generate_tree_test():
     tree = TTree("test", rootNode)
     a = Node(_a)
     b = Node(_b)
-    c = Node(_b)
 
     # print('\n')
     # print(rootNode.children)
@@ -73,8 +72,8 @@ def saving_tree_test():
 
     from anytree.exporter import JsonExporter
 
-    # The default lambda expression tells json what the default value of an objects stuff should
-    # be if the value cannot be serialized
+    # The default lambda expression tells json what the default value of an
+    # objects stuff should be if the value cannot be serialized
     js_exporter = JsonExporter(
         indent=2, sort_keys=True, default=lambda o: '<not serializable>')
 

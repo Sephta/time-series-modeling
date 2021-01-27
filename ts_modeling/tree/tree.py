@@ -16,7 +16,7 @@ Transformation Tree object
 from __future__ import annotations
 from anytree import NodeMixin, RenderTree, render, PostOrderIter
 from typing import List, Callable, Union
-from tree_helpers import *
+# from tree_helpers import * (used by add_path_byname)
 import pickle
 
 __authors__ = "Alec Springel, Seth Tal"
@@ -65,9 +65,9 @@ class TTree():
         self.root.set_id(0)
         self.id_iterator = 1
 
-        # self.__nodes is just a list containing references of every node in the tree
-        # It is just a nice little helper attribute (ez way to check if nodes are
-        # contained in the tree)
+        # self.__nodes is just a list containing references of every node in
+        # the tree It is just a nice little helper attribute (ez way to
+        # check if nodes are contained in the tree)
         self.__nodes = [root]
 
     def save(self, file: str):
@@ -83,7 +83,7 @@ class TTree():
 
     def print_tree(self, id=False):
         """Prints a visual representation of the tree"""
-        for pre, fill, node in RenderTree(self.root):
+        for pre, null, node in RenderTree(self.root):
             if(id):
                 treestr = u"%s%s (%s)" % (pre, node.name, node.id)
             else:
@@ -106,8 +106,8 @@ class TTree():
                 # Set the runtime ID of the new Node
                 self.set_id(new_node)
             else:
-                raise Exception("New Node cannot be added to target " \
-                                "because target is not associated " \
+                raise Exception("New Node cannot be added to target "
+                                "because target is not associated "
                                 "with this tree.")
         else:
             if not target:
@@ -125,11 +125,24 @@ class TTree():
     def __add_newpath_byref(self, target: Node, path: [Node]):
         """PRIVATE: Helper function for adding paths by reference to
         target node"""
-        path[0].set_parent(target)
-        self.set_id(path[0])
-        for i in range(1, len(path)):
-            path[i].set_parent(path[i-1])
-            self.set_id(path[i])
+        if target and len(path) > 0:
+            if target in self.__nodes:
+                path[0].set_parent(target)
+                self.__nodes.append(path[0])
+                self.set_id(path[0])
+                for i in range(1, len(path)):
+                    path[i].set_parent(path[i-1])
+                    self.__nodes.append(path[i])
+                    self.set_id(path[i])
+            else:
+                raise Exception("New Node cannot be added to target "
+                                "because target is not associated "
+                                "with this tree.")
+        else:
+            if not target:
+                raise Exception("Target is None")
+            else:
+                raise Exception("No nodes in path")
 
     def add_newpath(self, target: Node, path: Union[Node, [Node]]):
         """Builds a path starting with target node, and iterating through path,
@@ -169,8 +182,8 @@ class TTree():
         # If any node in the new path is already contained in tree, throw error
         for node in path:
             if node.id:
-                raise Exception(
-                    "Nodes within new path cannot be contained in the tree already.")
+                raise Exception("Nodes within new path cannot be "
+                                "contained in the tree already.")
         targets = [node for node in PostOrderIter(self.root,
                                                   filter_=lambda n:
                                                   n.id == target_id)]
