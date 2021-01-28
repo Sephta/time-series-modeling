@@ -12,6 +12,7 @@ Transformation Tree object
           specified type as a list
 
         > reparent nodes in the tree
+    * Prof mentioned grabbing pipelines from the leaves of the tree
 """
 from __future__ import annotations
 from anytree import NodeMixin, RenderTree, render, PostOrderIter
