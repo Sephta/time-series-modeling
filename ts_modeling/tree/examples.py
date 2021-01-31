@@ -13,14 +13,18 @@ import pickle
 def root():
     return "Executing Operator root"
 
+
 def _a():
     return "Executing Operator a"
+
 
 def _b():
     return "Executing Operator b"
 
+
 def test_func():
-        return "Hello World"
+    return "Hello World"
+
 
 class Test_func_class():
 
@@ -35,7 +39,9 @@ class Test_func_class():
     * literally just here to test certain types of functionality
 """
 
-#region Generate_tree_test()
+# region Generate_tree_test()
+
+
 def generate_tree_test():
     rootNode = Node(root)
     tree = TTree("test", rootNode)
@@ -52,9 +58,11 @@ def generate_tree_test():
     tree.print_nodes_as_list()
 
     tree.print_tree(id=True)
-#endregion
+# endregion
 
-#region Saving_tree_test()
+# region Saving_tree_test()
+
+
 def saving_tree_test():
     # For now user should start by creating a root node
     root_node = Node(root)
@@ -93,9 +101,11 @@ def saving_tree_test():
         print("Here is the json formatting:")
         print(js_exporter.export(tree_to_save.root))
         print('\n')
-#endregion
+# endregion
 
-#region Pickle_test()
+# region Pickle_test()
+
+
 def pickle_test():
     # For now user should start by creating a root node
     root_node = Node(root)
@@ -113,16 +123,15 @@ def pickle_test():
     # (it doesn't)
     def test_func2():
         return "hello world 2"
-    
-    # tests to see if pickle will serialize the function 
+
+    # tests to see if pickle will serialize the function
     # contained in the class "Test_func_class"
     test_func3 = Test_func_class()
-    
+
     test_func_node = Node(test_func)
     # test_func2_node = Node(test_func2)
     # test_func3_node = Node(test_func3.test_func)
-    
-    
+
     tree_to_save.add_node(root_node, test_func_node)
     # tree_to_save.add_node(root_node, test_func2_node)
     # tree_to_save.add_node(root_node, test_func3_node)
@@ -140,20 +149,25 @@ def pickle_test():
 
     # loads tree object from pickle file
     loaded_tree = load_tree(pickle_file_location)
-    
+
     # print loaded tree to see if 'tree_to_save' matches
     loaded_tree.print_tree(id=True)
-#endregion
+# endregion
 
-#region Pipeline_test() {Concept}
+# region Pipeline_test() {Concept}
+
+
 def test1():
     return "hello world (test 1), "
+
 
 def test2(val: str):
     return (val + " test2 added", 1)
 
+
 def test3(val):
     return val[0] + ", " + "test3 added, "
+
 
 def test4(val: str):
     return (val + " this is TEST " + str(4), 4)
@@ -174,21 +188,25 @@ def pipeline_test():
             result = pipeline[i].function(result)
 
     print(result[0])
-#endregion
+# endregion
 
-#region Test_pipeline_class()
+# region Test_pipeline_class()
+
+
 def _preProcess():
     arr = [1, 2, 3, 4, 5, 6]
     print("op1...")
     print("Array to process: " + str(arr))
     return arr
 
+
 def _denoise(arr: []):
     print("")
     print("op2...")
-    result = [a*2 for a in arr]
+    result = [a * 2 for a in arr]
     print("Array after \"denoising: \"" + str(result))
     return (result, "denoised")
+
 
 def _scale(denoise_tuple):
     print("")
@@ -197,12 +215,14 @@ def _scale(denoise_tuple):
     print("Array after \"scaling\": " + str(result))
     return (result, denoise_tuple[1] + ", scaled")
 
+
 def _plot(scale_tuple):
     print("")
     print("op4...")
     print("Here is the data that was passed through the pipeline:")
     print(str(scale_tuple[0]))
     print(scale_tuple[1])
+
 
 def Test_pipeline_class():
     print("")
@@ -268,7 +288,8 @@ def Test_pipeline_class():
     pipeline_test5.save("./ts_modeling/saved_pipelines/pipe_test.pickle")
 
     from tree_utils import load_pipeline
-    loaded_pipeline = load_pipeline("./ts_modeling/saved_pipelines/pipe_test.pickle")
+    loaded_pipeline = load_pipeline(
+        "./ts_modeling/saved_pipelines/pipe_test.pickle")
 
     print("Pipeline after load...")
     loaded_pipeline.print()
@@ -300,7 +321,7 @@ def Test_pipeline_class():
     tree.print_tree()
 
     pipeline_list = tree.get_pipelines()
-    
+
     for i in range(len(pipeline_list)):
         print("printing pipeline (" + str(i) + ")")
         pipeline_list[i].print()
@@ -324,7 +345,7 @@ def Test_pipeline_class():
 
     print("")
 
-#endregion
+# endregion
 
 
 # generate_tree_test()
