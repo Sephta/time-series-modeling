@@ -18,7 +18,7 @@ Transformation Tree object
     ? Note: Pipeline -> execute_pipeline -> plotting?
     
         (seth) > Pipeline.execute(leaf_node: Node)                                DONE? - YES
-        (seth) > TTree.pipelines() -> [Pipeline]                                  DONE? - NO
+        (seth) > TTree.pipelines() -> [Pipeline]                                  DONE? - YES
         (seth) > TTree.execute_tree()                                             DONE? - NO
 
         (seth) class Pipeline():                                                  DONE? - YES
@@ -27,8 +27,8 @@ Transformation Tree object
 
             def execute()
 
-        (seth) > TTree.generate_pipeline(node: Node) -> Pipeline                  DONE? - NO
-        (seth) > TTree.generate_pipeline_byid(id: int) -> Pipeline                DONE? - NO
+        (seth) > TTree.generate_pipeline(node: Node) -> Pipeline                  DONE? - YES
+        (seth) > TTree.generate_pipeline_byid(id: int) -> Pipeline                DONE? - YES
 
 """
 #region Imports
