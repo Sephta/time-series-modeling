@@ -5,7 +5,7 @@ Transformation Tree object
     * Some class methods we should add:
         adding a list of nodes as children of target...
         (alec) > TTree.add_nodes (ref to node, [Node] or Node)                    DONE? - NO
-        (alec) > TTree.add_nodes_byname (target_name, [Node] or Node)             DONE? - NO
+        (alec) > TTree.add_nodes_byname (target_name, [Node] or Node)             DONE? - ISSUE
         (alec) > TTree.add_nodes_byid (target_id, [Node] or Node)                 DONE? - NO
 
         (alec) > TTree.reparent_node() reparents nodes in the tree                DONE? - NO
@@ -114,6 +114,17 @@ class TTree():
         node.set_id(self.id_iterator)
         self.id_iterator += 1
 
+    def find_byid(self, id: int):
+        """Returns a reference to node with specified id"""
+        node_ref = [node for node in PostOrderIter(self.root,
+                                                   filter_=lambda n:
+                                                   n.id == id)]
+        if(len(node_ref) > 0):
+            return node_ref[0]
+        else:
+            raise Exception("Node with id " + id +
+                            " does not exist in the TTree")
+
     def print_tree(self, id=False):
         """Prints a visual representation of the tree"""
         for pre, null, node in RenderTree(self.root):
@@ -149,10 +160,41 @@ class TTree():
                 raise Exception("Node being added is None")
         pass
 
-    def add_nodes(self, target: Node, nodes: [Node]):
+    def add_nodes(self, target: Node, nodes: Union[Node, [Node]]):
+        """Sets target (by reference) as parent of nodes"""
+        if target and nodes:
+            if(type(nodes) is not list):  # Allows single node as parameter
+                nodes = [nodes]
+            # if target is contained within the tree
+            if target in self.__nodes:
+                for node in nodes:
+                    # set parent of new node
+                    node.set_parent(target)
+
+                    # update tree to contain new node
+                    self.__nodes.append(node)
+                    # Set the runtime ID of the new Node
+                    if not node.id:
+                        self.set_id(node)
+            else:
+                raise Exception("New Node cannot be added to target "
+                                "because target is not associated "
+                                "with this tree.")
+        else:
+            if not target:
+                raise Exception("Target is None")
+            elif not nodes:
+                raise Exception("Nodes being added is None")
         pass
 
-    def add_nodes_byname(self, operator: str, nodes: [Node]):
+    # def add_nodes_byname(self, operator: str, nodes: Union[Node, [Node]]):
+    #     """Sets target operator as parent of nodes"""
+    #     pass
+
+    def add_nodes_byid(self, target_id: int, nodes: Union[Node, [Node]]):
+        pass
+
+    def reparent_node(self):
         pass
 
     def __add_newpath_byref(self, target: Node, path: [Node]):
@@ -164,7 +206,7 @@ class TTree():
                 self.__nodes.append(path[0])
                 self.set_id(path[0])
                 for i in range(1, len(path)):
-                    path[i].set_parent(path[i-1])
+                    path[i].set_parent(path[i - 1])
                     self.__nodes.append(path[i])
                     self.set_id(path[i])
             else:
@@ -198,14 +240,9 @@ class TTree():
             if node.id:
                 raise Exception("Nodes within new path cannot be "
                                 "contained in the tree already.")
-        targets = [node for node in PostOrderIter(self.root,
-                                                  filter_=lambda n:
-                                                  n.id == target_id)]
-
-        for target in targets:
-            # Need to make copy of path, otherwise anytree will move the path
-            # to a new target on each iteration (bc the refs haven't changed)
-            self.__add_newpath_byref(target, path)
+        # Find node with target_id
+        target = self.find_byid(target_id)
+        self.__add_newpath_byref(target, path)
 
     def get_pipelines(self) -> [Pipeline]:
 
@@ -300,6 +337,6 @@ class Pipeline():
         if self.operators:
             print("Pipeline:")
             for i in range(len(self.operators)):
-                print("\t" + str(i+1) + ". " + self.operators[i].__name__)
+                print("\t" + str(i + 1) + ". " + self.operators[i].__name__)
 
 # endregion
