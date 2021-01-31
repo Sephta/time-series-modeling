@@ -4,45 +4,52 @@ Todo:
 Transformation Tree object
     * Some class methods we should add:
         adding a list of nodes as children of target...
-        (alec) > TTree.add_nodes (ref to node, [Node] or Node)                           DONE? - NO
-        (alec) > TTree.add_nodes_byname (target_name, [Node] or Node)                    DONE? - NO
-        (alec) > TTree.add_nodes_byid (target_id, [Node] or Node)                        DONE? - NO
+        (alec) > TTree.add_nodes (ref to node, [Node] or Node)                    DONE? - NO
+        (alec) > TTree.add_nodes_byname (target_name, [Node] or Node)             DONE? - NO
+        (alec) > TTree.add_nodes_byid (target_id, [Node] or Node)                 DONE? - NO
 
-        (alec) > TTree.reparent_node() reparents nodes in the tree                       DONE? - NO
+        (alec) > TTree.reparent_node() reparents nodes in the tree                DONE? - NO
             (takes children with it)
 
-    * Prof mentioned grabbing pipelines from the leaves of the tree
+    * Note: Prof mentioned grabbing pipelines from the leaves of the tree
 
-    * Right now, working concept is that pipelines are just a list of Nodes
+    * Note: Right now, working concept is that pipelines are just a list of Nodes
 
-        Pipeline -> execute_pipeline -> plotting?
-        (seth) > Pipeline.execute(leaf_node: Node)                                DONE? - NO
+    ? Note: Pipeline -> execute_pipeline -> plotting?
+    
+        (seth) > Pipeline.execute(leaf_node: Node)                                DONE? - YES
         (seth) > TTree.pipelines() -> [Pipeline]                                  DONE? - NO
         (seth) > TTree.execute_tree()                                             DONE? - NO
 
-        (seth) class Pipeline():
+        (seth) class Pipeline():                                                  DONE? - YES
             def __init__():
                 self.nodes = [function pointer thingies]
 
             def execute()
-        
-        (seth) > TTree.generate_pipeline(node: Node) -> Pipeline             DONE? - NO
-        (seth) > TTree.generate_pipeline_byid(id: int) -> Pipeline           DONE? - NO
+
+        (seth) > TTree.generate_pipeline(node: Node) -> Pipeline                  DONE? - NO
+        (seth) > TTree.generate_pipeline_byid(id: int) -> Pipeline                DONE? - NO
 
 """
+#region Imports
 from __future__ import annotations
 from anytree import NodeMixin, RenderTree, render, PostOrderIter
 from typing import List, Callable, Union
-import tree_utils
+from tree_utils import copy_path
 import pickle
+#endregion
 
+
+#region Module Meta data
 __authors__ = "Alec Springel, Seth Tal"
 __version__ = "1.0.0"
 __emails__ = "aspring6@uoregon.edu, stal@uoregon.edu"
 __credits__ = "Kyra Novitzky, Ronny Fuentes, Stephanie Schofield"
 __date__ = "01/23/2021"
+#endregion
 
 
+#region Node Class
 class Node(NodeMixin):
     def __init__(self, function: Callable, parent: Node = None,
                  children: [Node] = None):
@@ -80,7 +87,10 @@ class Node(NodeMixin):
     def copy(self) -> Node:
         return Node(self.function, self.parent, self.children)
 
+#endregion
 
+
+#region TTree Class
 class TTree():
     def __init__(self, name: str, root: Node):
         self.name = name
@@ -216,7 +226,90 @@ class TTree():
             # to a new target on each iteration (bc the refs haven't changed)
             self.__add_newpath_byref(target, path)
 
+    def get_pipelines(self) -> [Pipeline]:
+        
+        pipelines = []
+        leaf_nodes = []
+        
+        # grab all leaf nodes to build pipelines from
+        for i in range(len(self.__nodes)):
+            if not self.__nodes[i].children:
+                leaf_nodes.append(self.__nodes[i])
 
-    class Pipeline():
-        def __init__(self):
-            pass
+        # construct and append Pipelines from list of leaf_nodes
+        for i in range(len(leaf_nodes)):
+            new_pipeline = Pipeline(build_node=leaf_nodes[i])
+            pipelines.append(new_pipeline)
+        
+        return pipelines
+
+    def generate_pipeline(self, build_node: Node) -> Pipeline:
+        if build_node in self.__nodes:
+            return Pipeline(build_node=build_node)
+        else:
+            raise Exception("Node cannot be used to generate pipeline in "
+                            "this tree, because Node is not associated "
+                            "with this tree.")
+
+    def generate_pipeline_byid(self, id: int) -> Pipeline:  
+        result = None
+        
+        for i in range(len(self.__nodes)):
+            if self.__nodes[i].id == id:
+                result = Pipeline(build_node=self.__nodes[i])
+        if result:
+            return result
+        else:
+            raise Exception("Error node of id: " + str(id) + " not found in this tree.")
+
+#endregion
+
+
+#region Pipeline Class
+""" Pipeline object
+Capsulizes each operator along a linear path of operator nodes from TTree()
+
+<param> "operators" : list of function pointers to execute linearly
+
+"""
+class Pipeline():
+
+    def __init__(self, build_node: Node = None, operators : [Callable] = None):
+        if build_node is not None:
+            self.operators = []
+            self.generate(build_node)
+        else:
+            if (operators):
+                self.operators = operators if operators is not None else []
+            else:
+                raise Exception("Build this object by either passing in list of Callables," \
+                                " or a compatible \"Node\" object to build from.")
+    
+    def generate(self, node: Node):
+        self.operators.append(node.function)
+        
+        # print("\nTEST: "+ str(self.operators) + "\n")
+
+        while (node.parent is not None):
+            self.operators.append(node.parent.function)
+            node = node.parent
+        
+        self.operators = [op for op in reversed(self.operators)]
+    
+    def execute(self):
+        result = self.operators[0]()
+        
+        for i in range(1, len(self.operators)):
+            result = self.operators[i](result)
+    
+    def save(self, destination_path: str):
+        with open(destination_path, 'wb') as file:
+            pickle.dump(self, file)
+
+    def print(self):
+        if self.operators:
+            print("Pipeline:")
+            for i in range(len(self.operators)):
+                print("\t" + str(i+1) + ". " + self.operators[i].__name__)
+
+#endregion
