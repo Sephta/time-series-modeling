@@ -15,11 +15,11 @@ Transformation Tree object
 
     * Note: Right now, working concept is that pipelines are just a list of Nodes
 
+Pipeline Object
     ? Note: Pipeline -> execute_pipeline -> plotting?
-    
         (seth) > Pipeline.execute(leaf_node: Node)                                DONE? - YES
         (seth) > TTree.pipelines() -> [Pipeline]                                  DONE? - YES
-        (seth) > TTree.execute_tree()                                             DONE? - NO
+        (seth) > TTree.execute_tree()                                             DONE? - YES
 
         (seth) class Pipeline():                                                  DONE? - YES
             def __init__():
@@ -253,14 +253,19 @@ class TTree():
 
     def generate_pipeline_byid(self, id: int) -> Pipeline:  
         result = None
-        
+
         for i in range(len(self.__nodes)):
             if self.__nodes[i].id == id:
                 result = Pipeline(build_node=self.__nodes[i])
         if result:
             return result
         else:
-            raise Exception("Error node of id: " + str(id) + " not found in this tree.")
+            raise Exception("ERROR: node of id: " + str(id) + " not found in this tree.")
+
+    def execute_tree(self):
+        pipelines = self.get_pipelines()
+        for i in range(len(pipelines)):
+            pipelines[i].execute()
 
 #endregion
 
