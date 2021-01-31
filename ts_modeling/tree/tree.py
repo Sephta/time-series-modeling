@@ -31,25 +31,25 @@ Pipeline Object
         (seth) > TTree.generate_pipeline_byid(id: int) -> Pipeline                DONE? - YES
 
 """
-#region Imports
+# region Imports
 from __future__ import annotations
 from anytree import NodeMixin, RenderTree, render, PostOrderIter
 from typing import List, Callable, Union
 from tree_utils import copy_path
 import pickle
-#endregion
+# endregion
 
 
-#region Module Meta data
+# region Module Meta data
 __authors__ = "Alec Springel, Seth Tal"
 __version__ = "1.0.0"
 __emails__ = "aspring6@uoregon.edu, stal@uoregon.edu"
 __credits__ = "Kyra Novitzky, Ronny Fuentes, Stephanie Schofield"
 __date__ = "01/23/2021"
-#endregion
+# endregion
 
 
-#region Node Class
+# region Node Class
 class Node(NodeMixin):
     def __init__(self, function: Callable, parent: Node = None,
                  children: [Node] = None):
@@ -74,23 +74,23 @@ class Node(NodeMixin):
     def set_parent(self, parent):
         self.parent = parent
         return self.parent
-    
+
     def get_parent(self):
         return self.parent
 
     def set_children(self, children):
         self.children = children
-    
+
     def get_children(self):
         return self.children
 
     def copy(self) -> Node:
         return Node(self.function, self.parent, self.children)
 
-#endregion
+# endregion
 
 
-#region TTree Class
+# region TTree Class
 class TTree():
     def __init__(self, name: str, root: Node):
         self.name = name
@@ -190,25 +190,6 @@ class TTree():
                                 "contained in the tree already.")
         self.__add_newpath_byref(target, path)
 
-    # ! We need to come back to this
-    # def add_newpath_byname(self, target_name: str, path: Union[Node, [Node]]):
-    #     """Builds a path starting with target node, and iterating through path,
-    #     inserting these nodes as children of eachother
-    #     (starting with target)
-
-    #     Note: User will lose references to original path (need to make copy)
-    #     """
-    #     if(type(path) is not list):  # Allows single node as parameter
-    #         path = [path]
-    #     targets = [node for node in PostOrderIter(self.root,
-    #                                               filter_=lambda n:
-    #                                               n.name == target_name)]
-    #     for target in targets:
-    #         # Need to make copy of path, otherwise anytree will move the path
-    #         # to a new target on each iteration (bc the refs haven't changed)
-    #         path_copy = copy_path(path)
-    #         self.__add_newpath_byref(target, path_copy)
-
     def add_newpath_byid(self, target_id: int, path: Union[Node, [Node]]):
         if(type(path) is not list):  # Allows single node as parameter
             path = [path]
@@ -227,10 +208,10 @@ class TTree():
             self.__add_newpath_byref(target, path)
 
     def get_pipelines(self) -> [Pipeline]:
-        
+
         pipelines = []
         leaf_nodes = []
-        
+
         # grab all leaf nodes to build pipelines from
         for i in range(len(self.__nodes)):
             if not self.__nodes[i].children:
@@ -240,7 +221,7 @@ class TTree():
         for i in range(len(leaf_nodes)):
             new_pipeline = Pipeline(build_node=leaf_nodes[i])
             pipelines.append(new_pipeline)
-        
+
         return pipelines
 
     def generate_pipeline(self, build_node: Node) -> Pipeline:
@@ -251,7 +232,7 @@ class TTree():
                             "this tree, because Node is not associated "
                             "with this tree.")
 
-    def generate_pipeline_byid(self, id: int) -> Pipeline:  
+    def generate_pipeline_byid(self, id: int) -> Pipeline:
         result = None
 
         for i in range(len(self.__nodes)):
@@ -260,26 +241,29 @@ class TTree():
         if result:
             return result
         else:
-            raise Exception("ERROR: node of id: " + str(id) + " not found in this tree.")
+            raise Exception("ERROR: node of id: " + str(id) +
+                            " not found in this tree.")
 
     def execute_tree(self):
         pipelines = self.get_pipelines()
         for i in range(len(pipelines)):
             pipelines[i].execute()
 
-#endregion
+# endregion
 
 
-#region Pipeline Class
+# region Pipeline Class
 """ Pipeline object
 Capsulizes each operator along a linear path of operator nodes from TTree()
 
 <param> "operators" : list of function pointers to execute linearly
 
 """
+
+
 class Pipeline():
 
-    def __init__(self, build_node: Node = None, operators : [Callable] = None):
+    def __init__(self, build_node: Node = None, operators: [Callable] = None):
         if build_node is not None:
             self.operators = []
             self.generate(build_node)
@@ -287,26 +271,27 @@ class Pipeline():
             if (operators):
                 self.operators = operators if operators is not None else []
             else:
-                raise Exception("Build this object by either passing in list of Callables," \
-                                " or a compatible \"Node\" object to build from.")
-    
+                raise Exception("Build this object by either passing in list"
+                                " of Callables, or a compatible \"Node\""
+                                " object to build from.")
+
     def generate(self, node: Node):
         self.operators.append(node.function)
-        
+
         # print("\nTEST: "+ str(self.operators) + "\n")
 
         while (node.parent is not None):
             self.operators.append(node.parent.function)
             node = node.parent
-        
+
         self.operators = [op for op in reversed(self.operators)]
-    
+
     def execute(self):
         result = self.operators[0]()
-        
+
         for i in range(1, len(self.operators)):
             result = self.operators[i](result)
-    
+
     def save(self, destination_path: str):
         with open(destination_path, 'wb') as file:
             pickle.dump(self, file)
@@ -317,4 +302,4 @@ class Pipeline():
             for i in range(len(self.operators)):
                 print("\t" + str(i+1) + ". " + self.operators[i].__name__)
 
-#endregion
+# endregion
