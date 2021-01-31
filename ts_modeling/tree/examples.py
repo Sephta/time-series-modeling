@@ -144,6 +144,37 @@ class Test_func_class():
         return "Hello World"
 
 
+def test1():
+    return "hello world"
+
+def test2(val: str):
+    return (val + " 1 added", 1)
+
+def test3(val):
+    return val[0] + "2 added"
+
+def test4(val: str):
+    return 0
+
+
+def pipeline_test():
+    rootNode = Node(test1)
+    a = Node(test2)
+    b = Node(test3)
+    c = Node(test4)
+
+    pipeline = [rootNode, a, b, c]
+
+    for i in range(len(pipeline)):
+        if(i == 0):
+            result = pipeline[i].function()
+        else:
+            result = pipeline[i].function(result)
+
+    print(result)
+
+
 # generate_tree_test()
 # saving_tree_test()
-pickle_test()
+# pickle_test()
+pipeline_test()

@@ -4,20 +4,36 @@ Todo:
 Transformation Tree object
     * Some class methods we should add:
         adding a list of nodes as children of target...
-        > add_nodes (ref to node, [Node] or Node)
-        > add_nodes_byname (target_name, [Node] or Node)
-        > add_nodes_byid (target_id, [Node] or Node)
+        (alec) > TTree.add_nodes (ref to node, [Node] or Node)                           DONE? - NO
+        (alec) > TTree.add_nodes_byname (target_name, [Node] or Node)                    DONE? - NO
+        (alec) > TTree.add_nodes_byid (target_id, [Node] or Node)                        DONE? - NO
 
-        > get_all_nodes_oftype(op_name) # this returns all operators of
-          specified type as a list
+        (alec) > TTree.reparent_node() reparents nodes in the tree                       DONE? - NO
+            (takes children with it)
 
-        > reparent nodes in the tree
     * Prof mentioned grabbing pipelines from the leaves of the tree
+
+    * Right now, working concept is that pipelines are just a list of Nodes
+
+        Pipeline -> execute_pipeline -> plotting?
+        (seth) > Pipeline.execute(leaf_node: Node)                                DONE? - NO
+        (seth) > TTree.pipelines() -> [Pipeline]                                  DONE? - NO
+        (seth) > TTree.execute_tree()                                             DONE? - NO
+
+        (seth) class Pipeline():
+            def __init__():
+                self.nodes = [function pointer thingies]
+
+            def execute()
+        
+        (seth) > TTree.generate_pipeline(node: Node) -> Pipeline             DONE? - NO
+        (seth) > TTree.generate_pipeline_byid(id: int) -> Pipeline           DONE? - NO
+
 """
 from __future__ import annotations
 from anytree import NodeMixin, RenderTree, render, PostOrderIter
 from typing import List, Callable, Union
-# from tree_helpers import * (used by add_path_byname)
+import tree_utils
 import pickle
 
 __authors__ = "Alec Springel, Seth Tal"
@@ -51,11 +67,17 @@ class Node(NodeMixin):
     def set_parent(self, parent):
         self.parent = parent
         return self.parent
+    
+    def get_parent(self):
+        return self.parent
 
     def set_children(self, children):
         self.children = children
+    
+    def get_children(self):
+        return self.children
 
-    def copy(self):
+    def copy(self) -> Node:
         return Node(self.function, self.parent, self.children)
 
 
@@ -195,8 +217,6 @@ class TTree():
             self.__add_newpath_byref(target, path)
 
 
-def load_tree(file: str) -> TTree:
-    """Loads tree as python object from specified file path"""
-    with open(file, 'rb') as handle:
-        tree = pickle.load(handle)
-    return tree
+    class Pipeline():
+        def __init__(self):
+            pass
