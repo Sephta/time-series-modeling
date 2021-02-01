@@ -4,11 +4,11 @@ Todo:
 Transformation Tree object
     * Some class methods we should add:
         adding a list of nodes as children of target...
-        (alec) > TTree.add_nodes (ref to node, [Node] or Node)                    DONE? - NO
+        (alec) > TTree.add_nodes (ref to node, [Node] or Node)                    DONE? - YES
         (alec) > TTree.add_nodes_byname (target_name, [Node] or Node)             DONE? - ISSUE
-        (alec) > TTree.add_nodes_byid (target_id, [Node] or Node)                 DONE? - NO
+        (alec) > TTree.add_nodes_byid (target_id, [Node] or Node)                 DONE? - YES
 
-        (alec) > TTree.reparent_node() reparents nodes in the tree                DONE? - NO
+        (alec) > TTree.reparent_node() reparents nodes in the tree                DONE? - YES
             (takes children with it)
 
     * Note: Prof mentioned grabbing pipelines from the leaves of the tree
@@ -103,6 +103,18 @@ class TTree():
         # check if nodes are contained in the tree)
         self.__nodes = [root]
 
+    def __repr__(self):
+        """__repr__ allows us to define the default string representation
+        of this class"""
+        ret = ""
+        for pre, null, node in RenderTree(self.root):
+            if(id):
+                treestr = u"%s%s (%s)" % (pre, node.name, node.id)
+            else:
+                treestr = u"%s%s" % (pre, node.name)
+            ret += treestr.ljust(8) + "\n"
+        return ret
+
     def save(self, file: str):
         """Saves tree to as serialized object to specified file path"""
         with open(file, 'wb') as handle:
@@ -125,6 +137,7 @@ class TTree():
             raise Exception("Node with id " + id +
                             " does not exist in the TTree")
 
+    # DEPRECATED: use print(tree) instead. See __repr__ above.
     def print_tree(self, id=False):
         """Prints a visual representation of the tree"""
         for pre, null, node in RenderTree(self.root):
@@ -192,10 +205,11 @@ class TTree():
     #     pass
 
     def add_nodes_byid(self, target_id: int, nodes: Union[Node, [Node]]):
-        pass
+        target = self.find_byid(target_id)
+        self.add_nodes(target, nodes)
 
-    def reparent_node(self):
-        pass
+    def reparent_node(self, parent: Node, node: Node):
+        node.set_parent(parent)
 
     def __add_newpath_byref(self, target: Node, path: [Node]):
         """PRIVATE: Helper function for adding paths by reference to
