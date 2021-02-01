@@ -7,7 +7,7 @@ Bitwise Team
 Project One: Time Series Analysis
 
 Utility: preprocessing functions for reading data files
-and preparing for visualization.
+and preparing them for visualization.
 
 Note: pandas and sklearn must be downloaded in order to use this 
 software. 
@@ -18,10 +18,10 @@ import sys
 import pandas
 import sklearn
 
-__authors__ = "Ronny Fuentes, Stephanie Schofield"
+__authors__ = "Stephanie Schofield"
 __version__ = "1.0.0"
-__emails__ = "ronnyf@uoregon.edu, sschofie@cs.uoregon.edu"
-__credits__ = "Kyra Novitzky, Alec Springel, Seth Tal"
+__emails__ = "sschofie@cs.uoregon.edu"
+__credits__ = "Ronny Fuentes, Kyra Novitzky, Alec Springel, Seth Tal"
 __date__ = "01/22/2021"
 
 
@@ -29,6 +29,10 @@ def denoise(list: ts):
     """ Removes noise from times series. Takes in
     time series list, processes using modules and 
     moving median from Pandas library. """
+
+    # add enumerators for tagging
+    # might be another library that does this
+    # want to write as little custom code as possible
 
     return "Not implemented yet"
 
@@ -117,6 +121,9 @@ def split_data(list: ts, float: perc_training, float: perc_valid,
     """ Returns a time series separated into training, 
     validation, and testing according to the specified
     percentages. """
+
+    # ML data: test data set, training data set, split the CSV data
+    # based on what percentages are passed in
 
     return "Not implemented yet"
 
