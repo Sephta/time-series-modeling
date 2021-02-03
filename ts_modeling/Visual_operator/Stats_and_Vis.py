@@ -181,3 +181,6 @@ def smape(y_test, y_forecast):  # Completed
     print(f"Symmetric Mean Absolute Precentage Error: {result:.2f}")
     return
 # smape(ts1, ts1_pred)
+
+
+print("change")
