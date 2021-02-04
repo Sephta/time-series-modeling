@@ -27,44 +27,56 @@ __date__ = "01/22/2021"
 
 
 def read_file(csv_fname: str):
-    """ Reads a CSV file and converts into readable format."""
+    """ Reads a CSV file and converts it to a time series."""
 
-    # reads the csv file and adds "temp_in_celsius" as column name
-    tfile = pd.read_csv(csv_fname, names=["temp_in_celsius"])
-    # renames index column to "day"
-    tfile.index.name = "day"
+    # reads the csv file
+    # head = 0 to specify header information at row 0
+    # index_col = 0 to show that first column contains index info
+    # squeeze=True because we only have one data column and want a time series
+    # this converts ts to a time series
+    ts = pd.read_csv(csv_fname, header=0, index_col=0, squeeze=True)
 
-    # fig, axs = plt.subplots(figsize=(12, 4))
-    # tfile.groupby(tfile[0]).plot(kind='bar', rot=0, ax=axs)
-    print(tfile.head())
+    return ts
 
 
-def denoise(ts: list):
+def denoise(ts):
     """ Removes noise from times series. Takes in
     time series list, processes using modules and 
     moving median from Pandas library. """
 
-    # add enumerators for tagging
-    # might be another library that does this
-    # want to write as little custom code as possible
+    # converts series data points into the median of the window
+    # with the max window being the length of the data
+    # min_periods = 1 for the minimum amount of data required
+    # at a given series position
+    denoised = ts.rolling(len(ts), min_periods=1).median()
 
-    return "Not implemented yet"
+    # converts series values back into a list for visualization purposes
+    denoised_list = denoised.values.tolist()
+
+    return denoised_list
 
 
-def impute_missing_data(ts: list):
+def impute_missing_data(ts):
     """ Encodes missing data in time series as
     blanks for efficiency when reading files. 
     Uses Pandas library modules. """
 
-    return "Not implemented yet"
+    # fills NaN values with 0s
+    ts.fillna(0)
+
+    return ts
 
 
-def impute_outliers(ts: list):
+def impute_outliers(ts):
     """ Removes outlier data points from time
     series list. Uses scikit ML modules to
     search for outliers. """
 
-    return "Not implemented yet"
+    # removes all random numbers that lie in the lowest 15
+    # percent quantile and the highest 85 percent quantile
+    ts = ts[ts.between(ts.quantile(.15), ts.quantile(.85))]
+
+    return ts
 
 
 def longest_continuous_run(ts: list):
