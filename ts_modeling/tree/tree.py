@@ -337,8 +337,13 @@ class Pipeline():
 
         self.operators = [op for op in reversed(self.operators)]
 
-    def execute(self):
-        result = self.operators[0]()
+    def execute(self, args=None):
+        result = None
+        
+        if args:
+            result = self.operators[0](args)
+        else:
+            result = self.operators[0]()
 
         for i in range(1, len(self.operators)):
             result = self.operators[i](result)

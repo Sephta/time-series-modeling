@@ -224,6 +224,17 @@ def _plot(scale_tuple):
     print(scale_tuple[1])
 
 
+class Class_Method_Test():
+    def __init__(self):
+        pass
+    def method_test(self, denoise_tuple):
+        print("")
+        print("op3...")
+        result = [b**2 for b in denoise_tuple[0]]
+        print("Array after \"scaling\": " + str(result))
+        return (result, denoise_tuple[1] + ", scaled")
+
+
 def Test_pipeline_class():
     print("")
 
@@ -247,37 +258,37 @@ def Test_pipeline_class():
     print("TREE:")
     tree.print_tree()
 
-    # TEST 1 =============================================================
+    #region TEST 1 =======================================================
     pre_pipeline = [opA.function, opB.function, opC.function, opD.function]
 
     pipeline_test1 = Pipeline(None, pre_pipeline)
 
     print("\nTest 1 { build test 1 }")
     pipeline_test1.print()
-    # ====================================================================
+    #endregion ===========================================================
 
-    # TEST 2 =============================================================
+    #region TEST 2 =======================================================
     pipeline_test2 = Pipeline(opD, None)
 
     print("\nTest 2 { build test 2 }")
     pipeline_test2.print()
-    # ====================================================================
+    #endregion ===========================================================
 
-    # TEST 3 =============================================================
+    #region TEST 3 =======================================================
     pipeline_test3 = Pipeline(opB, None)
 
     print("\nTest 3 { build test 3 }")
     pipeline_test3.print()
-    # ====================================================================
+    #endregion ===========================================================
 
-    # TEST 4 =============================================================
+    #region TEST 4 =======================================================
     pipeline_test4 = Pipeline(None, pre_pipeline)
 
     print("\nTest 4 { pipeline execution }")
     pipeline_test4.execute()
-    # ====================================================================
+    #endregion ===========================================================
 
-    # TEST 5 =============================================================
+    #region TEST 5 =======================================================
     print("\nTest 5 { pickling }")
     print("")
     print("Pipeline pre save...")
@@ -297,9 +308,9 @@ def Test_pipeline_class():
 
     print("Testing loaded pipeline execution...")
     loaded_pipeline.execute()
-    # ====================================================================
+    #endregion ===========================================================
 
-    # TEST 6 =============================================================
+    #region TEST 6 =======================================================
     print("\nTest 6 { TTree.get_pipelines() }")
     print("")
     opA_2 = Node(_preProcess)
@@ -325,9 +336,9 @@ def Test_pipeline_class():
     for i in range(len(pipeline_list)):
         print("printing pipeline (" + str(i) + ")")
         pipeline_list[i].print()
-    # ====================================================================
+    #endregion ===========================================================
 
-    # TEST 7 =============================================================
+    #region TEST 7 =======================================================
     print("\nTest 7 { TTree.generate_pipeline() }")
     print("")
 
@@ -341,7 +352,87 @@ def Test_pipeline_class():
     # Uncomment line bellow to test if proper "byid" exception raised
     # pipeline_test7_pt3 = tree.generate_pipeline_byid(999)
 
-    # ====================================================================
+    #endregion ===========================================================
+
+    #region TEST 8 =======================================================
+    print("\nTest 8 { Class Method - Pipeline test }")
+    print("")
+    methodTest = Class_Method_Test()
+
+    # Tree nodes
+    op1 = Node(_preProcess)
+    op2 = Node(_denoise)
+    op3 = Node(methodTest.method_test)
+    op4 = Node(_plot)
+
+    tree2 = TTree("Test Tree 2", op1)
+
+    tree2.add_node(op1, op2)
+    tree2.add_node(op2, op3)
+    tree2.add_node(op3, op4)
+
+    print(tree2)
+
+    pipeline_test8 = Pipeline(op4)
+
+    pipeline_test8.print()
+
+    print("\nExecuting Pipeline_test8")
+    pipeline_test8.execute()
+    #endregion============================================================
+
+    #region TEST 9 =======================================================
+    def t9_root():
+        print("first op called...")
+        from numpy import array
+
+        forecast_input = array([40, 50, 60])
+        forecast_input = forecast_input.reshape((1, len(forecast_input)))
+        return forecast_input
+    def _t9op2(arr):
+        print("second op called..." + str(arr))
+        return arr
+    def _t9op3(arr):
+        print("third op called..." + str(arr))
+        return arr
+
+    print("\nTest 9 { Using real class - method test }")
+    print("")
+
+    from forecasting import mlp_model
+
+    time_series = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+
+    steps = 3
+
+    test9 = mlp_model(time_series, steps)
+
+    test9.split_data()
+    test9.mlp.fit(test9.X, test9.y)
+
+    # print("Forecast for", forecast_input, ":", test9.forecast(forecast_input), "\n")
+
+    t9_op1 = Node(t9_root)
+    t9_op2 = Node(_t9op2)
+    t9_op3 = Node(_t9op3)
+    t9_method_test = Node(test9.forecast)
+
+    t9_tree = TTree("Test 9 tree", t9_op1)
+
+    t9_tree.add_node(t9_op1, t9_op2)
+    t9_tree.add_node(t9_op2, t9_op3)
+    t9_tree.add_node(t9_op3, t9_method_test)
+
+    print(t9_tree)
+
+    t9_pipeline = Pipeline(t9_method_test)
+
+    t9_pipeline.print()
+
+    print("\nExecuting pipeline t9:")
+    t9_pipeline.execute()
+
+    #endregion ===========================================================
 
     print("")
 
