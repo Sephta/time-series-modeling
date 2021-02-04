@@ -104,7 +104,15 @@ def longest_continuous_run(ts):
     or blank data. Returns a time series. Uses
     scikit ML modules to search through list. """
 
-    return "Not implemented yet"
+    f = dict(Start=pd.Series.first_valid_index,
+             Stop=pd.Series.last_valid_index,
+             Stretch='count')
+
+    agged = ts.values.groupby(ts.values.isnull().cumsum()).agg(f)
+    agged.loc[agged.Stretch.idxmax(), ['Start', 'Stop']].values
+
+    print(agged)
+    return agged
 
 
 def clip(ts: list, starting_date: tuple, final_date: tuple):
@@ -197,4 +205,5 @@ def ts2db(input_filename: str, perc_training: float,
 
 ts = read_file("../time_series_data/1_temperature_test.csv")
 denoised = denoise(ts)
-impute_missing_data(denoised)
+cleaned = impute_missing_data(denoised)
+longest_continuous_run(cleaned)
