@@ -32,7 +32,7 @@ def denoise(ts):
     moving median from Pandas library. """
     series = pandas.Series(ts) #converts the time series list into a Pandas Series
                                #which is just a 1D array capable of holding any data
-    print("Original series data:\n", series)
+    #print("Original series data:\n", series)
 
     denoised_series = series.rolling(len(ts), min_periods=1).median()   #converts series data points
                                                                         #into the median of the window.
@@ -40,13 +40,15 @@ def denoise(ts):
                                                                         #length of the data.
                                                                         #min_periods = min amount of data
                                                                         #required at a given series position.
-    print("Denoised series data:\n", denoised_series)
+    #print("Denoised series data:\n", denoised_series)
     denoised_list = denoised_series.values.tolist()                     #converts series values back into
                                                                         #list for visualization
-    print("Denoised list data\n", denoised_list)
+    #print("Denoised list data\n", denoised_list)
 
 """
 Use below code to test denoise. ts represents a list of time series data.
+Don't forget to remove '#' from commented out print statement within
+denoise function in order to visualize what is going on.
 """
 """
 ts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
