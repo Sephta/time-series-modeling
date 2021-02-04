@@ -29,8 +29,9 @@ class mlp_model:
         self.num_time_steps = num_steps                 #The amount of data desired in one sample
         self.X = list()                                 #Input Matrix
         self.y = list()                                 #Output Matrix
+        self.split_data()                               #Calling split_data() which is required
+                                                        #to use fit and forecast
 
-    #def split_data(self, , num_time_steps):
     def split_data(self):
         """
         This function takes a time series as input, in the form of a
@@ -50,6 +51,10 @@ class mlp_model:
         [10, 20, 30] 40         This line is 1 sample with 3 input steps and 1 output step
         [20, 30, 40] 50         [10, 20, 30] = sample with 3 input steps
         [30, 40, 50] 60         40 = output which is a single step
+
+        Behind the scenes:
+        X = [[10, 20, 30], [20, 30, 40], [30, 40, 50]]      #This is a multi-dimensional matrix, hence X
+        y = [40, 50, 60]                                    #This is a 1D matrix, hence y
         """
         #X, y = list(), list()
         for i in range(len(self.data)):
@@ -70,6 +75,9 @@ class mlp_model:
         This function produces a forecase for the time series's
         current state, x.
 
+        input_for_prediction is the sequence that we want to predict the next
+        output for.
+
         Ex:
         input_array = [40, 50, 60]
         forecast(input_array)
@@ -81,6 +89,17 @@ class mlp_model:
                         10, the next number in the sequence will
                         most likely be 70
         """
+        input_for_prediction = array(input_for_prediction)  #Changes list into an array 
+                                                            #Ex: [40, 50, 60] ---> [40 50 60]
+
+        input_for_prediction = input_for_prediction.reshape((1, len(input_for_prediction)))
+
+        # Reshapes the array into a new array consisting of that array
+        # Ex: [40 50 60] ---> [[40 50 60]]
+        # Note: still unsure of what the shape (or array being passed to predict) 
+        # needs to be in order to function correctly
+        # I think array must be the same dimension as y
+
         return self.mlp.predict(input_for_prediction)
 
     # make sure forecast returns a list
@@ -90,7 +109,7 @@ Below is an example on how to use the object mlp_model along with it's
 functionalities. Can remove quotes to test.
 """
 
-"""
+
 print("\n")
 
 time_series = [10, 20, 30, 40, 50, 60, 70, 80, 90]   #Represents time series data in form of list
@@ -103,18 +122,13 @@ steps = 3                                            #Represents the number of d
 
 example = mlp_model(time_series, steps)              #Creates the mlp_model and assigns it to example
 
-example.split_data()                                 #Calling split_data() which is required to use fit and forecast
-
 for i in range(len(example.X)):                      #Printing the output of what split_data() did to original data
     print(example.X[i], example.y[i])
 
 example.mlp.fit(example.X, example.y)                #Fitting data (must do this before forecasting)
                                                      #parameters will always be example.X and example.y
 
-input = array([40, 50, 60])                          #This is the sequence that we want to predict the next
-                                                     #output for.
-
-input = input.reshape((1, len(input)))               #Not sure what this does, but necessary. Asking Flores.
+input = [20, 30, 40]
 
 print("\n")
 
@@ -122,4 +136,3 @@ print("Forecast for",                                #Prints forecast for an inp
       input, ":", example.forecast(input))
 
 print("\n")
-"""
