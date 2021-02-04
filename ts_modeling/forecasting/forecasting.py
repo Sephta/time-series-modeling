@@ -109,7 +109,7 @@ Below is an example on how to use the object mlp_model along with it's
 functionalities. Can remove quotes to test.
 """
 
-
+"""
 print("\n")
 
 time_series = [10, 20, 30, 40, 50, 60, 70, 80, 90]   #Represents time series data in form of list
@@ -136,3 +136,4 @@ print("Forecast for",                                #Prints forecast for an inp
       input, ":", example.forecast(input))
 
 print("\n")
+"""
