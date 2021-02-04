@@ -94,8 +94,6 @@ def histogram(ts):  # Completed
     plt.grid()
     plt.show()
     return
-
-
 # histogram(ts1)
 
 
@@ -171,14 +169,12 @@ def normality_test(ts):  # Completed
         if stat_ad.statistic < stat_ad.critical_values[i]:
             print(f'{st:.3f}: {cv:.3f}: Accepted. From normal distribution')
         else:
-            print(f'{st:.3f}: {cv:.3f}: Rejected. Data set normal distribution')
+            print(f'{st:.3f}: {cv:.3f}: Rejected. Data not normal')
     # Plots a standardized line, scaled by the SD of the time series.
     qqplot(data, line='s')
     plt.show()
     return
-
-
-normality_test(ts1)
+# normality_test(ts1)
 
 
 # The three functions below need to be supplied
