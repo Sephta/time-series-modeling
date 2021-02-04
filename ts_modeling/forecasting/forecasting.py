@@ -72,6 +72,7 @@ class mlp_model:
 
         Ex:
         input_array = [40, 50, 60]
+        forecast(input_array)
 
         Output:
         [70]            This is because we are predicting what the
