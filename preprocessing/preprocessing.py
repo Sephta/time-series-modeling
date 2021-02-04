@@ -34,7 +34,7 @@ def read_file(csv_fname: str):
     # index_col = 0 to show that first column contains index info
     # squeeze=True because we only have one data column and want a time series
     # this converts ts to a time series
-    ts = pd.read_csv(csv_fname, header=0, index_col=0, squeeze=True)
+    ts = pd.read_csv(csv_fname, header=0, squeeze=True)
 
     return ts
 
@@ -49,11 +49,24 @@ def denoise(ts):
     # min_periods = 1 for the minimum amount of data required
     # at a given series position
     denoised = ts.rolling(len(ts), min_periods=1).median()
+    print("DENOISE")
+    print(denoised)
+    print()
 
-    # converts series values back into a list for visualization purposes
-    denoised_list = denoised.values.tolist()
+    # cannot have denoised as a list because all other preprocessing
+    # functions take a time series, so kyra/ronny can use the ts_to_list
+    # helper function below for conversion
 
-    return denoised_list
+    return denoised
+
+
+def ts_to_list(ts):
+    """ Converts time series object to a list for visualization. 
+        Returns list. """
+
+    ts_as_list = ts.values.tolist()
+
+    return ts_as_list
 
 
 def impute_missing_data(ts):
@@ -63,6 +76,9 @@ def impute_missing_data(ts):
 
     # fills NaN values with 0s
     ts.fillna(0)
+    print("IMPUTE_MISSING_DATA")
+    print(ts)
+    print()
 
     return ts
 
@@ -75,11 +91,14 @@ def impute_outliers(ts):
     # removes all random numbers that lie in the lowest 15
     # percent quantile and the highest 85 percent quantile
     ts = ts[ts.between(ts.quantile(.15), ts.quantile(.85))]
+    print("IMPUTE_OUTLIERS")
+    print(ts)
+    print()
 
     return ts
 
 
-def longest_continuous_run(ts: list):
+def longest_continuous_run(ts):
     """ Finds the longest amount of time in
     the time series list without any missing
     or blank data. Returns a time series. Uses
@@ -176,4 +195,6 @@ def ts2db(input_filename: str, perc_training: float,
     return "Not implemented yet"
 
 
-read_file("../time_series_data/1_temperature_test.csv")
+ts = read_file("../time_series_data/1_temperature_test.csv")
+denoised = denoise(ts)
+impute_missing_data(denoised)
