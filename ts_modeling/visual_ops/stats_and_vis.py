@@ -178,7 +178,7 @@ def normality_test(ts):  # Completed
 
 
 # The three functions below need to be supplied
-# a forcasted array from rf.forecast(x).
+# a forcasted array from rf.forecast(x)
 # Currently using arbitrary data for testing.
 
 def mse(y_test, y_forecast):  # Completed
