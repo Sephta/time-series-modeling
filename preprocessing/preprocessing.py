@@ -35,8 +35,16 @@ def read_file(csv_fname: str):
     # squeeze=True because we only have one data column and want a time series
     # this converts ts to a time series
     ts = pd.read_csv(csv_fname, header=0, squeeze=True)
-
     return ts
+
+
+def ts_to_list(ts):
+    """ Converts time series object to a list for visualization. 
+        Returns list. """
+
+    ts_as_list = ts.values.tolist()
+
+    return ts_as_list
 
 
 def denoise(ts):
@@ -49,24 +57,12 @@ def denoise(ts):
     # min_periods = 1 for the minimum amount of data required
     # at a given series position
     denoised = ts.rolling(len(ts), min_periods=1).median()
-    print("DENOISE")
-    print(denoised)
-    print()
 
     # cannot have denoised as a list because all other preprocessing
     # functions take a time series, so kyra/ronny can use the ts_to_list
     # helper function below for conversion
 
     return denoised
-
-
-def ts_to_list(ts):
-    """ Converts time series object to a list for visualization. 
-        Returns list. """
-
-    ts_as_list = ts.values.tolist()
-
-    return ts_as_list
 
 
 def impute_missing_data(ts):
@@ -76,9 +72,6 @@ def impute_missing_data(ts):
 
     # fills NaN values with 0s
     ts.fillna(0)
-    print("IMPUTE_MISSING_DATA")
-    print(ts)
-    print()
 
     return ts
 
@@ -91,9 +84,6 @@ def impute_outliers(ts):
     # removes all random numbers that lie in the lowest 15
     # percent quantile and the highest 85 percent quantile
     ts = ts[ts.between(ts.quantile(.15), ts.quantile(.85))]
-    print("IMPUTE_OUTLIERS")
-    print(ts)
-    print()
 
     return ts
 
@@ -111,15 +101,14 @@ def longest_continuous_run(ts):
     agged = ts.values.groupby(ts.values.isnull().cumsum()).agg(f)
     agged.loc[agged.Stretch.idxmax(), ['Start', 'Stop']].values
 
-    print(agged)
     return agged
 
 
-def clip(ts: list, starting_date: tuple, final_date: tuple):
+def clip(ts, starting_date, final_date):
     """ Removes parts of the time series that
     fall outside of the start date and end date. """
 
-    return "Not implemented yet"
+    return ts.between_time(starting_date, final_date)
 
 
 def assign_time(ts: list, start: tuple, increment: int):
@@ -203,7 +192,12 @@ def ts2db(input_filename: str, perc_training: float,
     return "Not implemented yet"
 
 
-ts = read_file("../time_series_data/1_temperature_test.csv")
-denoised = denoise(ts)
-cleaned = impute_missing_data(denoised)
-longest_continuous_run(cleaned)
+def main():
+    ts = read_file("../time_series_data/1_temperature_test.csv")
+    denoised = denoise(ts)
+    cleaned1 = impute_missing_data(denoised)
+    cleaned2 = impute_outliers(cleaned1)
+
+
+if __name__ == '__main__':
+    main()
