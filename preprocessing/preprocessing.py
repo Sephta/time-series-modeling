@@ -16,7 +16,7 @@ software.
 # import statements below
 import sys
 import pandas as pd
-import sklearn
+from sklearn.preprocessing import *
 import matplotlib.pyplot as plt
 
 __authors__ = "Stephanie Schofield"
@@ -108,10 +108,12 @@ def clip(ts, starting_date, final_date):
     """ Removes parts of the time series that
     fall outside of the start date and end date. """
 
-    return ts.between_time(starting_date, final_date)
+    # having issues with this because there are no
+    # dates in the data sets he uploaded
+    return ts.between_time(starting_date, final_date, axis='index')
 
 
-def assign_time(ts: list, start: tuple, increment: int):
+def assign_time(ts, start, increment):
     """ Assign times with a sequence of readings, 
     beginning with start time and separating times
     by the increment value. """
@@ -119,21 +121,27 @@ def assign_time(ts: list, start: tuple, increment: int):
     return "Not implemented yet"
 
 
-def differences(ts: list):
+def differences(ts):
     """ Returns a time series with magnitudes
     equivalent to the amount of space between
     consecutive elements in the original time
     series.  """
 
-    return "Not implemented yet"
+    return ts.diff()
 
 
-def scaling(ts: list):
+def scaling(ts):
     """ Returns a time series whose magnitudes
     are scaled so resulting magnitudes range
     fall inside of [0,1] """
 
-    return "Not implemented yet"
+    values = ts.values
+    values = values.reshape((len(values), 1))
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    scaler = scaler.fit(values)
+    normalized = scaler.transform(values)
+
+    return normalized
 
 
 def standardize(ts: list):
@@ -197,6 +205,9 @@ def main():
     denoised = denoise(ts)
     cleaned1 = impute_missing_data(denoised)
     cleaned2 = impute_outliers(cleaned1)
+    # clipped = clip(cleaned2, 0, 4)
+    diff = differences(cleaned2)
+    scaled = scaling(diff)
 
 
 if __name__ == '__main__':
