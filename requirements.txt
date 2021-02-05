@@ -4,3 +4,6 @@ pandas==1.2.1
 pylint
 autopep8
 pep8
+anytree==2.8.0
+pickle-mixin==1.0.2
+pytest==6.2.2

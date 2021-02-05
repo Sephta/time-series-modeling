@@ -63,6 +63,7 @@ class MlpModel:
         y = [40, 50, 60]
         """
         # X, y = list(), list()
+
         for i in range(len(self.data)):
             # find the end of this pattern
             end_ix = i + self.num_time_steps
