@@ -21,6 +21,7 @@ __date__ = "01/29/2021"
 import sklearn
 from sklearn.neural_network import MLPClassifier  # For mlp model
 from numpy import array  # For split function
+import numpy
 
 
 class MlpModel:
@@ -112,3 +113,11 @@ class MlpModel:
         return self.mlp.predict(input_for_prediction)
 
     # make sure forecast returns a list
+
+    def fitt(self):
+        new_y = array(self.y, dtype="|S6")
+        # needs to use above if time series data is floats.
+        # can use below if time series data is just just ints.
+        # new_y = array(self.y)
+        print(new_y)
+        self.mlp.fit(self.X, new_y)
