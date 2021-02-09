@@ -26,7 +26,7 @@ __credits__ = "Ronny Fuentes, Kyra Novitzky, Alec Springel, Seth Tal"
 __date__ = "01/22/2021"
 
 
-def read_file(csv_fname: str):
+def read_from_file(csv_input_fname: str):
     """ Reads a CSV file and converts it to a time series."""
 
     # reads the csv file
@@ -34,7 +34,19 @@ def read_file(csv_fname: str):
     # index_col = 0 to show that first column contains index info
     # squeeze=True because we only have one data column and want a time series
     # this converts ts to a time series
-    ts = pd.read_csv(csv_fname, header=0, squeeze=True)
+    ts = pd.read_csv(csv_input_fname, header=0, squeeze=True)
+    return ts
+
+
+def write_to_file(ts, csv_output_fname: str):
+    """ Writes a CSV file given a time series. """
+
+    # given a time series ts, to_csv function writes
+    # time series information to a CSV file named
+    # csv_output_fname. if file does not exist it will
+    # be created. returns ts, a time series.
+    ts.to_csv(csv_output_fname)
+
     return ts
 
 
