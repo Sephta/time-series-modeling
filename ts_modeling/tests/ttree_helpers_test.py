@@ -6,11 +6,11 @@ USE: 'pytest' in command line to execute
 import pytest
 import os
 import sys
-import testops
+import .testops
 # Needed to import from parent directory
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # IGNORE IMPORT NOT AT TOP OF FILE
-from tree import TTree, Node
+from ..tree.tree import TTree, Node
 
 
 # TESTS

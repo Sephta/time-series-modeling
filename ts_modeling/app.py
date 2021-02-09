@@ -6,9 +6,5 @@ Project One: Time Series Analysis
 """
 
 
-def main():
+def run():
     print("Welcome to the Bitwise Pipeline Generator!")
-
-
-if __name__ == "__main__":
-    main()
