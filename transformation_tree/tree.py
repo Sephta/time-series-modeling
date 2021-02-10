@@ -67,7 +67,7 @@ class Node(NodeMixin):
         """Returns id of this node"""
         return self.id
 
-    def set_parent(self, parent):
+    def set_parent(self, parent: Node):
         """Sets the parent of this Node"""
         self.parent = parent
         return self.parent

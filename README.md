@@ -1,50 +1,62 @@
 # Transformation Tree Library
 
-This repo holds all of the project files for class project 1 of CIS 422 (Software Methodology), at the University of Oregon
+This transformation tree library allows you to quickly build out possible modification paths for input data, and test various outcomes. The library also allows these pipelines and trees to be saved and loaded with ease.
 
-## Development Setup
-### Python Setup
-  * Make sure python is installed and added to PATH
-  * check python version (>=3.7.9)
-  * make sure pip is installed
+Links: [User Documentation](https://github.com/Sephta/time-series-modeling/blob/main/docs/user.md),
 
-### VSCode project setup
-  * create project directory and open directory with vscode
-  * create a basic python file inside this directory and name it what ever you want
-  * inside the terminal in vscode install virtualenv
+### Authors:
 
-```
-pip install virtualenv
-```
+CIS 422 @ University of Oregon  
+Team Bitwise  
+Ronny Fuentes, Kyra Novitzky, Stephanie Schofield, Alec Springel, Seth Tal
 
-then you will want to create the environment in your main project directory
+Last modified February 10, 2021
 
-```
-virtualenv env
-```
+## Installation
 
-  * vscode should prompt you to select the virtual environment for this wokspace folder, select "yes"
-
-this should make your default python interpreter the one used by the virtual environment
-
-  * now copy and paste over the requirements.txt file from this repo into your project directory
-  * then run the pip install command bellow
-
-```
-pip install -r requirements.txt
-```
-
-this should make sure all dependencies for transformation-tree are installed
-
-  * now pip install transformation-tree
+### For Users:
 
 ```
 pip install transformation-tree
 ```
 
-the library should now be usable in the python file you created within the repo
+See the documentation below for use cases and examples.
 
+### For Developers:
 
+- make sure python is installed and added to PATH
+- check python version (>=3.7.9)
+- make sure pip is installed
+- clone the repository:
 
+```
+git clone https://github.com/Sephta/time-series-modeling.git
+```
 
-### Cloning this repo...
+- install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+All source code can be found within transformation_tree.
+
+## Using the library
+
+There are four major modules in the library:
+
+- tree
+- preprocessing
+- forecasting
+- stats_and_vis
+
+which can be imported like so:
+
+```
+from transformation_tree.tree import *
+from transformation_tree.preprocessing import *
+from transformation_tree.forecasting import *
+from transformation_tree.stats_and_vis import *
+```
+
+To learn how to create a transformation tree, please visit the [User Documentation](https://github.com/Sephta/time-series-modeling/blob/main/docs/user.md).
