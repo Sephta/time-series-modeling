@@ -1,5 +1,5 @@
-from tree_utils import load_tree
-from tree import *
+from .tree_utils import load_tree
+from .tree import *
 from anytree import NodeMixin, RenderTree, render
 import pickle
 

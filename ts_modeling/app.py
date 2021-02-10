@@ -7,4 +7,5 @@ Project One: Time Series Analysis
 
 
 def run():
-    print("Welcome to the Bitwise Pipeline Generator!")
+    # print("Welcome to the Bitwise Pipeline Generator!")
+    print(__name__.split('.')[0])

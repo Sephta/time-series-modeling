@@ -1,44 +1,47 @@
-"""
-Utility: Tree backend for storing all potential pipelines.
+# -*- coding: utf-8 -*-
+"""Tree backend for storing all potential pipelines.
+
+This module contains the class definitions for Node, TTree, and Pipeline.
+
 Todo:
-Transformation Tree object
-    * Some class methods we should add:
-        adding a list of nodes as children of target...
-        (alec) > TTree.add_nodes (ref to node, [Node] or Node)                    DONE? - YES
-        (alec) > TTree.add_nodes_byname (target_name, [Node] or Node)             DONE? - ISSUE
-        (alec) > TTree.add_nodes_byid (target_id, [Node] or Node)                 DONE? - YES
+    Transformation Tree object
+        * Some class methods we should add:
+            * adding a list of nodes as children of target...
+            * (alec) > TTree.add_nodes                            DONE? - YES
+            * (alec) > TTree.add_nodes_byname                     DONE? - YES
+            * (alec) > TTree.add_nodes_byid                       DONE? - YES
 
-        (alec) > TTree.reparent_node() reparents nodes in the tree                DONE? - YES
-            (takes children with it)
+            * (alec) > TTree.reparent_node                        DONE? - YES
 
-    * Note: Prof mentioned grabbing pipelines from the leaves of the tree
+    Pipeline Object
+        Note: Pipeline -> execute_pipeline -> plotting?
+            * (seth) > Pipeline.execute(leaf_node: Node)          DONE? - YES
+            * (seth) > TTree.pipelines() -> [Pipeline]            DONE? - YES
+            * (seth) > TTree.execute_tree()                       DONE? - YES
 
-    * Note: Right now, working concept is that pipelines are just a list of Nodes
+            * (seth) class Pipeline()                             DONE? - YES
 
-Pipeline Object
-    ? Note: Pipeline -> execute_pipeline -> plotting?
-        (seth) > Pipeline.execute(leaf_node: Node)                                DONE? - YES
-        (seth) > TTree.pipelines() -> [Pipeline]                                  DONE? - YES
-        (seth) > TTree.execute_tree()                                             DONE? - YES
+            * (seth) > TTree.generate_pipeline                    DONE? - YES
+            * (seth) > TTree.generate_pipeline_byid               DONE? - YES
 
-        (seth) class Pipeline():                                                  DONE? - YES
-            def __init__():
-                self.nodes = [function pointer thingies]
-
-            def execute()
-
-        (seth) > TTree.generate_pipeline(node: Node) -> Pipeline                  DONE? - YES
-        (seth) > TTree.generate_pipeline_byid(id: int) -> Pipeline                DONE? - YES
+.. Source Code:
+    https://github.com/Sephta/time-series-modeling
 
 """
 # region Imports
 from __future__ import annotations
 from anytree import NodeMixin, RenderTree, render, PostOrderIter
 from typing import List, Callable, Union
-from tree_utils import copy_path
+from .tree_utils import copy_path
 import pickle
 # endregion
 
+
+def test():
+    print("Hello World")
+
+
+test()
 
 # region Module Meta data
 __authors__ = "Alec Springel, Seth Tal"
@@ -51,6 +54,21 @@ __date__ = "01/23/2021"
 
 # region Node Class
 class Node(NodeMixin):
+    """Node for use in TTree class. Child class of NodeMixin from anytree.
+
+    Attributes:
+        name (str): name of this node
+        function (Callable): reference to callable stored in this node
+        parent (Node): reference to parent node of this node
+        id (int): runtime id of this node
+        children ([Node]): references to children of this node
+
+    Args:
+        function (Callable): function being stored in this Node
+        parent (Node, optional): reference to node to set as parent
+        children ([Node], optional): List of nodes to set as children
+    """
+
     def __init__(self, function: Callable, parent: Node = None,
                  children: [Node] = None):
         self.name = function.__name__
@@ -66,25 +84,32 @@ class Node(NodeMixin):
         return 'Operator: {}'.format(self.name)
 
     def set_id(self, id):
+        """Used within the Node class. Should not be used outside of class"""
         self.id = id
 
     def get_id(self):
+        """Returns id of this node"""
         return self.id
 
     def set_parent(self, parent):
+        """Sets the parent of this Node"""
         self.parent = parent
         return self.parent
 
     def get_parent(self):
+        """Returns the parent Node of this Node"""
         return self.parent
 
     def set_children(self, children):
+        """Sets the children of this Node"""
         self.children = children
 
     def get_children(self):
+        """Returns children of this Node as List"""
         return self.children
 
     def copy(self) -> Node:
+        """Returns new Node object that is a copy of this Node"""
         return Node(self.function, self.parent, self.children)
 
 # endregion
@@ -92,6 +117,18 @@ class Node(NodeMixin):
 
 # region TTree Class
 class TTree():
+    """ Transformation Tree like data structure. Stores Nodes as standard tree.
+
+    Attributes:
+        name (str): name of this tree
+        root (Node): root node of this tree
+        __nodes ([Node], private): reference to each node of this tree
+
+    Args:
+        name (str): name of this tree
+        root (Node): Node to act as root of this tree
+    """
+
     def __init__(self, name: str, root: Node):
         self.name = name
         self.root = root
@@ -339,7 +376,7 @@ class Pipeline():
 
     def execute(self, args=None):
         result = None
-        
+
         if args:
             result = self.operators[0](args)
         else:
