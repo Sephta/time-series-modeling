@@ -20,7 +20,7 @@ import sklearn
 import matplotlib.pyplot as plt
 
 __authors__ = "Stephanie Schofield"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __emails__ = "sschofie@cs.uoregon.edu"
 __credits__ = "Ronny Fuentes, Kyra Novitzky, Alec Springel, Seth Tal"
 __date__ = "01/22/2021"

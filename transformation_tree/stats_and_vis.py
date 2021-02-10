@@ -24,7 +24,7 @@ from matplotlib import pyplot as plt
 # from test_data import ts1, ts2, ts3, ts1_test, ts1_pred
 
 __authors__ = "Ronny Fuentes"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __emails__ = "ronnyf@uoregon.edu"
 __credits__ = "Stephanie Schofield, Kyra Novitzky, Alec Springel, Seth Tal"
 __date__ = "01/21/2021"

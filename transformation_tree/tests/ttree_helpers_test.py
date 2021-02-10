@@ -10,7 +10,7 @@ from .testops import op1, op2, op3, root
 # Needed to import from parent directory
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # IGNORE IMPORT NOT AT TOP OF FILE
-from ..tree.tree import TTree, Node
+from ..ttree.tree import TTree, Node
 
 
 # TESTS
