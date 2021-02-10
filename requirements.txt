@@ -1,5 +1,10 @@
 # Example requirements...
 scikit-learn==0.24.1
+numpy
+matplotlib
+statsmodels
+seaborn
+scipy
 pandas==1.2.1
 pylint
 autopep8

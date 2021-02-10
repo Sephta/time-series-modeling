@@ -1,46 +1,50 @@
-# time-series-modeling
+# Transformation Tree Library
 
 This repo holds all of the project files for class project 1 of CIS 422 (Software Methodology), at the University of Oregon
 
 ## Development Setup
+### Python Setup
+  * Make sure python is installed and added to PATH
+  * check python version (>=3.7.9)
+  * make sure pip is installed
 
-### Auto-format PEP8 and linting
-
-Create the virtual env
+### VSCode project setup
+  * create project directory and open directory with vscode
+  * create a basic python file inside this directory and name it what ever you want
+  * inside the terminal in vscode install virtualenv
 
 ```
 pip install virtualenv
+```
+
+then you will want to create the environment in your main project directory
+
+```
 virtualenv env
 ```
 
-If using VSCode, create a .vscode/settings.json if not automatically generated. Add the following to the .vscode/settings.json to enable linting/formatting on save:
+  * vscode should prompt you to select the virtual environment for this wokspace folder, select "yes"
+
+this should make your default python interpreter the one used by the virtual environment
+
+  * now copy and paste over the requirements.txt file from this repo into your project directory
+  * then run the pip install command bellow
 
 ```
-{
-  "python.linting.pep8Enabled": true,
-  "python.linting.pylintEnabled": true,
-  "editor.formatOnSave": true,
-}
+pip install -r requirements.txt
 ```
 
-Start the virtual env (for Windows):
+this should make sure all dependencies for transformation-tree are installed
+
+  * now pip install transformation-tree
 
 ```
-. env/scripts/activate
+pip install transformation-tree
 ```
 
-or for Linux/MacOS:
+the library should now be usable in the python file you created within the repo
 
-```
-. env/bin/activate (MacOS/Linux)
-```
 
-After starting the virtual environment, install the linter and pep8 (VSCode will sometimes prompt you to do this):
 
-```
-pip install pep8
-pip install pylint
-pip install autopep8
-```
 
-To confirm setup was successful, check to see if your files are auto-formatted to pep8 upon saving. If so, the setup worked properly.
+### Cloning this repo...
