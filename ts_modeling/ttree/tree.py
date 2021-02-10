@@ -1,28 +1,11 @@
-# -*- coding: utf-8 -*-
 """Tree backend for storing all potential pipelines.
 
 This module contains the class definitions for Node, TTree, and Pipeline.
 
-Todo:
-    Transformation Tree object
-        * Some class methods we should add:
-            * adding a list of nodes as children of target...
-            * (alec) > TTree.add_nodes                            DONE? - YES
-            * (alec) > TTree.add_nodes_byname                     DONE? - YES
-            * (alec) > TTree.add_nodes_byid                       DONE? - YES
-
-            * (alec) > TTree.reparent_node                        DONE? - YES
-
-    Pipeline Object
-        Note: Pipeline -> execute_pipeline -> plotting?
-            * (seth) > Pipeline.execute(leaf_node: Node)          DONE? - YES
-            * (seth) > TTree.pipelines() -> [Pipeline]            DONE? - YES
-            * (seth) > TTree.execute_tree()                       DONE? - YES
-
-            * (seth) class Pipeline()                             DONE? - YES
-
-            * (seth) > TTree.generate_pipeline                    DONE? - YES
-            * (seth) > TTree.generate_pipeline_byid               DONE? - YES
+Classes:
+    Node
+    TTree
+    Pipeline
 
 .. Source Code:
     https://github.com/Sephta/time-series-modeling
@@ -35,13 +18,6 @@ from typing import List, Callable, Union
 from .tree_utils import copy_path
 import pickle
 # endregion
-
-
-def test():
-    print("Hello World")
-
-
-test()
 
 # region Module Meta data
 __authors__ = "Alec Springel, Seth Tal"
@@ -145,15 +121,12 @@ class TTree():
         of this class"""
         ret = ""
         for pre, null, node in RenderTree(self.root):
-            if(id):
-                treestr = u"%s%s (%s)" % (pre, node.name, node.id)
-            else:
-                treestr = u"%s%s" % (pre, node.name)
+            treestr = u"%s%s" % (pre, node.name)
             ret += treestr.ljust(8) + "\n"
         return ret
 
     def save(self, file: str):
-        """Saves tree to as serialized object to specified file path"""
+        """Saves tree as serialized pickle object to specified file path"""
         with open(file, 'wb') as handle:
             pickle.dump(self, handle)
 
@@ -174,9 +147,9 @@ class TTree():
             raise Exception("Node with id " + id +
                             " does not exist in the TTree")
 
-    # DEPRECATED: use print(tree) instead. See __repr__ above.
     def print_tree(self, id=False):
-        """Prints a visual representation of the tree"""
+        """Prints a visual representation of the tree with runtime ids for
+        each node"""
         for pre, null, node in RenderTree(self.root):
             if(id):
                 treestr = u"%s%s (%s)" % (pre, node.name, node.id)
@@ -185,9 +158,12 @@ class TTree():
             print(treestr.ljust(8))
 
     def print_nodes_as_list(self):
+        """Different from print(). Instead prints each node linearly"""
         print(self.__nodes)
 
     def add_node(self, target: Node, new_node: Node):
+        """Adds a node to the tree as child of target node"""
+
         # if either arg is not null
         if target and new_node:
             # if target is contained within the tree
@@ -211,7 +187,7 @@ class TTree():
         pass
 
     def add_nodes(self, target: Node, nodes: Union[Node, [Node]]):
-        """Sets target (by reference) as parent of nodes"""
+        """Adds list of Nodes to this tree as children of target Node"""
         if target and nodes:
             if(type(nodes) is not list):  # Allows single node as parameter
                 nodes = [nodes]
@@ -237,15 +213,13 @@ class TTree():
                 raise Exception("Nodes being added is None")
         pass
 
-    # def add_nodes_byname(self, operator: str, nodes: Union[Node, [Node]]):
-    #     """Sets target operator as parent of nodes"""
-    #     pass
-
     def add_nodes_byid(self, target_id: int, nodes: Union[Node, [Node]]):
+        """Similar to add_nodes(), except finds target by specified id."""
         target = self.find_byid(target_id)
         self.add_nodes(target, nodes)
 
     def reparent_node(self, parent: Node, node: Node):
+        """Reparents node to specified parent"""
         node.set_parent(parent)
 
     def __add_newpath_byref(self, target: Node, path: [Node]):
@@ -284,6 +258,7 @@ class TTree():
         self.__add_newpath_byref(target, path)
 
     def add_newpath_byid(self, target_id: int, path: Union[Node, [Node]]):
+        """Similar to add_newpath, except finds target node by id."""
         if(type(path) is not list):  # Allows single node as parameter
             path = [path]
         # If any node in the new path is already contained in tree, throw error
@@ -296,7 +271,7 @@ class TTree():
         self.__add_newpath_byref(target, path)
 
     def get_pipelines(self) -> [Pipeline]:
-
+        """Generates list of all possible pipelines in the tree."""
         pipelines = []
         leaf_nodes = []
 
@@ -313,6 +288,8 @@ class TTree():
         return pipelines
 
     def generate_pipeline(self, build_node: Node) -> Pipeline:
+        """Returns a Pipeline built from specified node.
+        Recursively traverses tree from build_node to root."""
         if build_node in self.__nodes:
             return Pipeline(build_node=build_node)
         else:
@@ -321,6 +298,7 @@ class TTree():
                             "with this tree.")
 
     def generate_pipeline_byid(self, id: int) -> Pipeline:
+        """Similar to generate_pipeline() except finds node by id."""
         result = None
 
         for i in range(len(self.__nodes)):
@@ -333,6 +311,8 @@ class TTree():
                             " not found in this tree.")
 
     def execute_tree(self):
+        """Generates and executes every possible pipeline in the tree
+        (generates pipelines from leaf nodes, and does not return list)."""
         pipelines = self.get_pipelines()
         for i in range(len(pipelines)):
             pipelines[i].execute()
@@ -341,20 +321,24 @@ class TTree():
 
 
 # region Pipeline Class
-""" Pipeline object
-Capsulizes each operator along a linear path of operator nodes from TTree()
-
-<param> "operators" : list of function pointers to execute linearly
-
-"""
-
-
 class Pipeline():
+    """ Pipeline object
+    Capsulizes each operator along a linear path of operator nodes from TTree()
+
+    Attributes:
+        operators ([Callable]): ordered list of callables for this pipeline
+                                to execute
+
+    Args:
+        <param> "build_node" : Node to build the Pipeline from
+        <param> "operators" : list of function pointers to execute linearly
+
+    """
 
     def __init__(self, build_node: Node = None, operators: [Callable] = None):
         if build_node is not None:
             self.operators = []
-            self.generate(build_node)
+            self._generate(build_node)
         else:
             if (operators):
                 self.operators = operators if operators is not None else []
@@ -363,7 +347,11 @@ class Pipeline():
                                 " of Callables, or a compatible \"Node\""
                                 " object to build from.")
 
-    def generate(self, node: Node):
+    def __repr__(self):
+        self.print()
+
+    def _generate(self, node: Node):
+        """PRIVATE: Used to build the list of callables for this pipeline"""
         self.operators.append(node.function)
 
         # print("\nTEST: "+ str(self.operators) + "\n")
@@ -375,6 +363,8 @@ class Pipeline():
         self.operators = [op for op in reversed(self.operators)]
 
     def execute(self, args=None):
+        """Executes list of callables linearly, passing return values as
+        params of the next callable"""
         result = None
 
         if args:
@@ -386,10 +376,14 @@ class Pipeline():
             result = self.operators[i](result)
 
     def save(self, destination_path: str):
+        """Serializes this Pipeline into a .pickle file stored at specified
+        file path."""
         with open(destination_path, 'wb') as file:
             pickle.dump(self, file)
 
     def print(self):
+        """DEPRECATED: use print(pipeline).
+        Prints pipeline into readable format."""
         if self.operators:
             print("Pipeline:")
             for i in range(len(self.operators)):
