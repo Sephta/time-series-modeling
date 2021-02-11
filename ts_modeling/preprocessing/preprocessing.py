@@ -123,8 +123,6 @@ def longest_continuous_run(ts):
     or blank data. Returns a time series. Uses
     scikit ML modules to search through list. """
 
-    # NOT DONE
-
     f = dict(Start=pd.Series.first_valid_index,
              Stop=pd.Series.last_valid_index,
              Stretch='count')
@@ -138,8 +136,6 @@ def longest_continuous_run(ts):
 def clip(ts, starting_date, final_date):
     """ Removes parts of the time series that
     fall outside of the start date and end date. """
-
-    # NOT DONE
 
     # having issues with this because there are no
     # dates in the data sets he uploaded
