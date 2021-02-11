@@ -10,7 +10,7 @@ Last modified February 10, 2021
 
 ## Setup
 
-Please follow the [setup instructions](https://github.com/Sephta/time-series-modeling/blob/main/docs/dev.md) for developers.
+Please follow the [setup instructions](https://github.com/Sephta/time-series-modeling/blob/main/docs/install.md) for developers.
 
 ## Linter, PEP8 Setup, and contributions
 
