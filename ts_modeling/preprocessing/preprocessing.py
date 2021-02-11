@@ -137,7 +137,10 @@ def clip(ts, starting_date, final_date):
     """ Removes parts of the time series that
     fall outside of the start date and end date. """
 
-    return ts.between_time(starting_date, final_date, axis='index')
+    ts = ts_to_list(ts)
+    clipped = list_to_ts(ts[starting_date: final_date + 1])
+
+    return clipped
 
 
 def assign_time(ts, start, increment):
