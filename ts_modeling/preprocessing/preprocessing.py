@@ -194,8 +194,6 @@ def standardize(ts):
     """ Returns a time series whose mean
     is 0 and variance is 1. """
 
-    # kyra's code below -- need to test
-
     values = ts.values
     values = values.reshape((len(values), 1))
     scaler = StandardScaler()
@@ -208,8 +206,6 @@ def standardize(ts):
 def logarithm(ts):
     """ Returns a time series whose elements are
     the logarithm of the original elements. """
-
-    # kyra's code below -- need to test
 
     ts_list = ts_to_list(ts)
     for i in range(0, len(ts)):
@@ -224,8 +220,6 @@ def cubic_root(ts):
     """ Returns a time series whose
     elements are the cubic root of
     each of the original elements. """
-
-    # kyra's code below -- need to test
 
     ts_list = ts_to_list(ts)
     for i in range(0, len(ts)):
@@ -286,11 +280,3 @@ def ts2db(input_filename: str, perc_training: float,
     write_to_file(db, output_file_name)
 
     return db
-
-
-def main():
-    test_file = "Time Series Data/1_temperature_test.csv"
-
-
-if __name__ == '__main__':
-    main()
