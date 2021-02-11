@@ -1,5 +1,3 @@
-#!/usr/bin/env/python
-
 """
 CIS 422 Winter 2021
 University of Oregon
