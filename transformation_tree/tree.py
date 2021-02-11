@@ -15,7 +15,6 @@ Classes:
 from __future__ import annotations
 from anytree import NodeMixin, RenderTree, render, PostOrderIter
 from typing import List, Callable, Union
-from .tree_utils import copy_path
 import pickle
 # endregion
 
@@ -386,3 +385,21 @@ class Pipeline():
                 print("\t" + str(i + 1) + ". " + self.operators[i].__name__)
 
 # endregion
+
+
+def load_tree(file: str):
+    """Loads tree as python object from specified file path"""
+    with open(file, 'rb') as handle:
+        tree = pickle.load(handle)
+    return tree
+
+
+def load_pipeline(file_path: str):
+    """Loads pipeline from filepath. Expects pickle file..."""
+    with open(file_path, 'rb') as file:
+        pipeline = pickle.load(file)
+    if pipeline:
+        return pipeline
+    else:
+        raise Exception("ERROR: encountered error loading pipeline from file \
+                        path: \"" + file_path + "\"")
