@@ -150,6 +150,7 @@ def assign_time(ts, start, increment):
 
     col = ts.columns[len(ts.columns) - 1]
     assigned = pd.DataFrama(columns=["Date", "Val"])
+
     for num in ts.index:
         assigned.loc[num] = ts.at[num, col]
 
@@ -161,6 +162,7 @@ def assign_time(ts, start, increment):
     full_date = dt.datetime(year, month, day)
 
     for item in assigned.index:
+
         assigned.at[item, date_col] = full_date
         full_date += dt.timedelta(hours=increment)
 
