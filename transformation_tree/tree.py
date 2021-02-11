@@ -20,7 +20,7 @@ import pickle
 
 # region Module Meta data
 __authors__ = "Alec Springel, Seth Tal"
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __emails__ = "aspring6@uoregon.edu, stal@uoregon.edu"
 __credits__ = "Kyra Novitzky, Ronny Fuentes, Stephanie Schofield"
 __date__ = "01/23/2021"

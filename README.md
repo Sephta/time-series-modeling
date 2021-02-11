@@ -20,6 +20,8 @@ Last modified February 10, 2021
 pip install transformation-tree
 ```
 
+[PyPi package info](https://pypi.org/project/transformation-tree/1.2.0/ "PyPi package info")
+
 See the documentation below for use cases and examples.
 
 ### For Developers:

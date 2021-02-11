@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="transformation-tree",
-    version="1.1.0",
+    version="1.2.0",
     python_requires=">=3.7.9",
     description="Transformation Tree library developed for CIS 422 @ \
                  University of Oregon",
