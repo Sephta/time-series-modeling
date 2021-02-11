@@ -16,12 +16,14 @@ from numpy import genfromtxt  # if csv file is given as input, use it.
 import random  # Used only when multiple TS are given (Change colors)
 import math  # Used in error functions. Specifically pow & sqrt
 import numpy as np
+import pandas as pd  # Used in case TS object is passed.
 from scipy.stats import shapiro, normaltest, anderson  # Normality tests
 from statsmodels.graphics.gofplots import qqplot
 import seaborn as sns  # represent statistical data
 from matplotlib import pyplot as plt
 # Currently using test_data. Comment out using other functions/libs.
 from test_data import ts1, ts2, ts3, ts1_test, ts1_pred
+
 
 __authors__ = "Ronny Fuentes"
 __version__ = "1.0.0"
@@ -30,10 +32,21 @@ __credits__ = "Stephanie Schofield, Kyra Novitzky, Alec Springel, Seth Tal"
 __date__ = "01/21/2021"
 
 
+def ts_to_list(ts):  # Completed
+    """
+    Helper function used to convert a pandas time
+    series object back to a python list object.
+    """
+    if isinstance(ts, pd.core.series.Series):
+        ts = ts.values.tolist()
+    return ts
+
+
 def multi_plot_ts(ts_list):  # Completed
     """
     Helper function used to plot multiple
     time series.
+    Input must be a list of time series
     """
     size = len(ts_list)
     # Creates a grid for a set of subplots.
@@ -58,17 +71,18 @@ def plot_ts(ts):  # Completed
     Calls: multi_plot if multi-layer array is given.
     """
     # Check the dimension of input
-    # working with single/many TS.
+    # Are we working with single/many TS?
     if isinstance(ts[0], list):
         return multi_plot_ts(ts)
 
+    ts = ts_to_list(ts)  # Converts ts object to list object
     title = plt.subplots()  # return type: Tuple
     title[0].suptitle("Plots")
     # ax.set(xlabel='Days', ylabel='Temperature')
     plt.plot(ts, "g", linewidth=2.0)
     plt.grid()
     plt.show()
-    return
+    return ts
 # plot_ts(ts1)
 
 
@@ -78,6 +92,7 @@ def histogram(ts):  # Completed
     time series. Plot the histogram vertically and
     side to side with a plot of the time series.
     """
+    ts = ts_to_list(ts)
     data = ts
     datax = []
     for i in range(len(data)):
@@ -93,7 +108,7 @@ def histogram(ts):  # Completed
     g.plot(sns.lineplot, sns.histplot, color="r")
     plt.grid()
     plt.show()
-    return
+    return ts
 # histogram(ts1)
 
 
@@ -102,6 +117,7 @@ def box_plot(ts):  # Completed
     Produces a Box and Whiskers plot of the time series.
     Also prints the 5-number summary of the data.
     """
+    ts = ts_to_list(ts)
     # Array of Loaded functions for summary
     summary = [lambda x: f"Min: {np.min(x)}", lambda x: f"Max: {np.max(x)}",
                lambda x: f"SD: {np.std(x):.3f}",
@@ -115,7 +131,7 @@ def box_plot(ts):  # Completed
     sns.set_theme(style="whitegrid")
     sns.boxplot(x=ts, color="green")
     plt.show()
-    return
+    return ts
 # box_plot(ts1)
 
 
@@ -130,6 +146,7 @@ def normality_test(ts):  # Completed
     inconsistencies if the data set (size) is to small to detect
     non-normality.
     """
+    ts = ts_to_list(ts)
     data = np.array(ts)
     # Shapiro-Wilk test: Detects all departures from normality.
     # Rejects the hypothesis of normality when the p-value is <= to 0.05.
@@ -173,13 +190,14 @@ def normality_test(ts):  # Completed
     # Plots a standardized line, scaled by the SD of the time series.
     qqplot(data, line='s')
     plt.show()
-    return
+    return ts
 # normality_test(ts1)
 
 
-# The three functions below need to be supplied
-# a forcasted array from rf.forecast(x)
-# Currently using arbitrary data for testing.
+######
+# Error Functions
+######
+
 
 def mse(y_test, y_forecast):  # Completed
     """
