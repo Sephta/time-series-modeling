@@ -21,7 +21,6 @@ import numpy as np
 from random import random
 from sklearn.preprocessing import *
 import matplotlib.pyplot as plt
-import ts_modeling.visual_ops.stats_and_vis as sv
 
 __authors__ = "Stephanie Schofield, Kyra Novitzky"
 __version__ = "1.0.0"
@@ -147,20 +146,25 @@ def assign_time(ts, start, increment):
     beginning with start time and separating times
     by the increment value. """
 
-    # need to test
+    # NOT DONE
 
-    print("original ts")
-    print(ts)
+    col = ts.columns[len(ts.columns) - 1]
+    assigned = pd.DataFrama(columns=["Date", "Val"])
+    for num in ts.index:
+        assigned.loc[x] = ts.at[num, col]
 
-    # set_index() pandas
-    for i in range(start, len(ts)):
-        time_val = i
-        time_val = time_val + increment
-        i = time_val
+    date_col = assigned.columns[0]
+    date = start.split(sep="/")
+    day = int(date[1])
+    month = int(date[0])
+    year = int(date[2])
+    full_date = dt.datetime(year, month, day)
 
-    print("new ts")
-    print(ts)
-    return ts
+    for item in assigned.index:
+        assigned.at[item, date_col] = full_date
+        full_date += dt.timedelta(hours=increment)
+
+    return assigned
 
 
 def differences(ts):

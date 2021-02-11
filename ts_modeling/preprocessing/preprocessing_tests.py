@@ -20,7 +20,6 @@ import numpy as np
 from random import random
 from sklearn.preprocessing import *
 import matplotlib.pyplot as plt
-import ts_modeling.visual_ops.stats_and_vis as sv
 import ts_modeling.preprocessing.preprocessing as pre
 
 __authors__ = "Stephanie Schofield"
@@ -95,11 +94,8 @@ def pipeline(csv_input_fname):
 
     ts = pre.read_from_file(csv_input_fname)
     denoised = pre.denoise(ts)
-    # not working yet -- sv.plot_ts(denoised)
     cleaned1 = pre.impute_missing_data(denoised)
-    # working -- sv.plot_ts(cleaned1)
     cleaned2 = pre.impute_outliers(cleaned1)
-    # working -- sv.plot_ts(cleaned2)
     # not working yet -- clipped = clip(cleaned2, 0, 4)
     diff = pre.differences(cleaned2)
     scaled = pre.scaling(diff)
