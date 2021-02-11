@@ -51,8 +51,8 @@ from transformation_tree.tree import TTree
 | TTree.add_nodes(target: Node, nodes: Node or [Node])         | Adds a single node or list of nodes as children of target                           |
 | TTree.add_nodes_byid(target_id: int, nodes: Node or [Node])  | Adds a single node or list of nodes as children of target node with ID == target_id |
 | TTree.reparent_node(parent: Node, node: Node)                | Sets the parent of node == parent                                                   |
-| TTree.add_newpath(target: Node, path: Node or [Node])        | Adds a path to the target Node                                                      |
-| TTree.add_newpath_byid(target_id: int, path: Node or [Node]) | Adds a path to the target node with ID == target_id                                 |
+| TTree.add_path(target: Node, path: Node or [Node])           | Adds a path to the target Node                                                      |
+| TTree.add_path_byid(target_id: int, path: Node or [Node])    | Adds a path to the target node with ID == target_id                                 |
 | TTree.get_pipelines() -> [Pipeline]                          | Returns a list of all possible pipelines (derived from leaf nodes)                  |
 | TTree.generate_pipeline(build_node: Node) -> Pipeline        | Returns a pipeline that ends with the build_node (built up to the root)             |
 | TTree.generate_pipeline_byid(id: int) -> Pipeline            | Returns a pipeline that ends with the Node whose ID == id (built up to the root)    |
