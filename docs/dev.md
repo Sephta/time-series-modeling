@@ -26,7 +26,11 @@ The library makes this the user's responsibility, i.e. the library will not ensu
 
 ### Tree Module
 
-The tree module is responsible for the Node, TTree, and Pipeline class. These classes make up the core functionality of the transformation tree library, with their primary purpose being to contruct trees and pipelines from operators
+The tree module is responsible for the Node, TTree, and Pipeline class. These classes make up the core functionality of the transformation tree library, with their primary purpose being to contruct trees and pipelines from operators.
+
+There are a few key nuances built into the tree module. It is important to note that Nodes make up trees, but all additions/removals from the tree should be made using the methods defined in the TTree class, not by manually modifying the parents and children of individual nodes. Furthermore, Nodes are assigned ID's when they are added to the tree. These ID's are unique, and have no correlation to the number of nodes in the tree. ID's are assigned by continually incrementing a counter within a tree object, making note of the next available ID.
+
+These ID's provide a valuable tool for data scientists, as they can work through jupyter notebooks (and other visual tools) without references to the original nodes.
 
 ### Preprocessing Module
 
