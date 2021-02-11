@@ -112,6 +112,7 @@ def main():
     design_matrix_test(test_file)
     ts2db_test(test_file)
     pipeline(test_file)
+    assign_time_test(test_file)
 
 
 if __name__ == '__main__':
