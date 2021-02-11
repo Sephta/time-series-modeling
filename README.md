@@ -1,46 +1,62 @@
-# time-series-modeling
+# Transformation Tree Library
 
-This repo holds all of the project files for class project 1 of CIS 422 (Software Methodology), at the University of Oregon
+This transformation tree library allows you to quickly build out possible modification paths for input data, and test various outcomes. The library also allows these pipelines and trees to be saved and loaded with ease. The library provides four major modules to build out transformation trees and pipelines, as well as provided operators and visualization tools to help build a pipeline.
 
-## Development Setup
+Links: [User Documentation](https://github.com/Sephta/time-series-modeling/blob/main/docs/user.md), [Developer Documentation](https://github.com/Sephta/time-series-modeling/blob/main/docs/dev.md), [Install Instructions](https://github.com/Sephta/time-series-modeling/blob/main/docs/install.md)
 
-### Auto-format PEP8 and linting
+### Authors:
 
-Create the virtual env
+CIS 422 @ University of Oregon  
+Team Bitwise  
+Ronny Fuentes, Kyra Novitzky, Stephanie Schofield, Alec Springel, Seth Tal
 
-```
-pip install virtualenv
-virtualenv env
-```
+Last modified February 10, 2021
 
-If using VSCode, create a .vscode/settings.json if not automatically generated. Add the following to the .vscode/settings.json to enable linting/formatting on save:
+## Installation
 
-```
-{
-  "python.linting.pep8Enabled": true,
-  "python.linting.pylintEnabled": true,
-  "editor.formatOnSave": true,
-}
-```
-
-Start the virtual env (for Windows):
+### For Users:
 
 ```
-. env/scripts/activate
+pip install transformation-tree
 ```
 
-or for Linux/MacOS:
+See the documentation below for use cases and examples.
+
+### For Developers:
+
+- make sure python is installed and added to PATH
+- check python version (>=3.7.9)
+- make sure pip is installed
+- clone the repository:
 
 ```
-. env/bin/activate (MacOS/Linux)
+git clone https://github.com/Sephta/time-series-modeling.git
 ```
 
-After starting the virtual environment, install the linter and pep8 (VSCode will sometimes prompt you to do this):
+- install dependencies:
 
 ```
-pip install pep8
-pip install pylint
-pip install autopep8
+pip install -r requirements.txt
 ```
 
-To confirm setup was successful, check to see if your files are auto-formatted to pep8 upon saving. If so, the setup worked properly.
+All source code can be found within transformation_tree.
+
+## Using the library
+
+There are four major modules in the library:
+
+- tree
+- preprocessing
+- forecasting
+- stats_and_vis
+
+which can be imported like so:
+
+```
+from transformation_tree.tree import *
+from transformation_tree.preprocessing import *
+from transformation_tree.forecasting import *
+from transformation_tree.stats_and_vis import *
+```
+
+To learn how to create a transformation tree, please visit the [User Documentation](https://github.com/Sephta/time-series-modeling/blob/main/docs/user.md).

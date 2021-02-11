@@ -11,7 +11,7 @@ this software.
 """
 
 __authors__ = "Kyra Novitzky"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __emails__ = "knovitzk@uoregon.edu"
 __credits__ = "Alec Springel, Seth Tal, Ronny Fuentes, Stephanie Schofield"
 __date__ = "01/29/2021"
@@ -49,8 +49,6 @@ class MlpModel:
         """
         return self.mlp.predict(input_for_prediction)
 
-    def fit(self, train_x, train_y)
-    """
-        Trains the mlp model for prediction.
-        """
-    self.mlp.fit(train_x, train_y)
+    def fit(self, train_x, train_y):
+        """Trains the mlp model for prediction."""
+        self.mlp.fit(train_x, train_y)
