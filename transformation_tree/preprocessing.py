@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 import datetime as dt
 
 __authors__ = "Stephanie Schofield, Kyra Novitzky"
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __emails__ = "sschofie@cs.uoregon.edu, knovitzk@uoregon.edu"
 __credits__ = "Ronny Fuentes, Alec Springel, Seth Tal"
 __date__ = "01/22/2021"
@@ -79,6 +79,8 @@ def denoise(ts):
     time series list, processes using modules and
     moving median from Pandas library. """
 
+    print("\nDENOISE running...\n")
+
     # converts series data points into the median of the window
     # with the max window being the length of the data
     # min_periods = 1 for the minimum amount of data required
@@ -96,6 +98,8 @@ def impute_missing_data(ts):
     """ Encodes missing data in time series as
     blanks for efficiency when reading files.
     Uses Pandas library modules. """
+    
+    print("\nIMPUTE MISSING DATA running...\n")
 
     # fills NaN values with 0s
     ts.fillna(0)
@@ -107,6 +111,8 @@ def impute_outliers(ts):
     """ Removes outlier data points from time
     series list. Uses scikit ML modules to
     search for outliers. """
+
+    print("\nIMPUTE_OUTLIERS running...\n")
 
     # removes all random numbers that lie in the lowest 15
     # percent quantile and the highest 85 percent quantile
@@ -120,6 +126,8 @@ def longest_continuous_run(ts):
     the time series list without any missing
     or blank data. Returns a time series. Uses
     scikit ML modules to search through list. """
+
+    print("\nLONGEST CONTINUOUS RUN running...\n")
 
     f = dict(Start=pd.Series.first_valid_index,
              Stop=pd.Series.last_valid_index,
@@ -135,6 +143,8 @@ def clip(ts, starting_date, final_date):
     """ Removes parts of the time series that
     fall outside of the start date and end date. """
 
+    print("\nCLIP running...\n")
+
     ts = ts_to_list(ts)
     clipped = list_to_ts(ts[starting_date: final_date + 1])
 
@@ -145,6 +155,8 @@ def assign_time(ts, start, increment):
     """ Assign times with a sequence of readings,
     beginning with start time and separating times
     by the increment value. """
+
+    print("\nASSIGN TIME running...\n")
 
     col = ts.columns[len(ts.columns) - 1]
     assigned = pd.DataFrama(columns=["Date", "Val"])
@@ -173,6 +185,8 @@ def differences(ts):
     consecutive elements in the original time
     series.  """
 
+    print("\nDIFFERENCES running...\n")
+
     return ts.diff()
 
 
@@ -180,6 +194,8 @@ def scaling(ts):
     """ Returns a time series whose magnitudes
     are scaled so resulting magnitudes range
     fall inside of [0,1] """
+
+    print("\nSCALING running...\n")
 
     values = ts.values
     values = values.reshape((len(values), 1))
@@ -194,6 +210,8 @@ def standardize(ts):
     """ Returns a time series whose mean
     is 0 and variance is 1. """
 
+    print("\nSTANDARDIZE running...\n")
+
     values = ts.values
     values = values.reshape((len(values), 1))
     scaler = StandardScaler()
@@ -206,6 +224,8 @@ def standardize(ts):
 def logarithm(ts):
     """ Returns a time series whose elements are
     the logarithm of the original elements. """
+
+    print("\nLOGARITHM running...\n")
 
     ts_list = ts_to_list(ts)
     for i in range(0, len(ts)):
@@ -220,6 +240,8 @@ def cubic_root(ts):
     """ Returns a time series whose
     elements are the cubic root of
     each of the original elements. """
+
+    print("\nCUBIC ROOT running...\n")
 
     ts_list = ts_to_list(ts)
     for i in range(0, len(ts)):
@@ -236,6 +258,8 @@ def split_data(ts, perc_training: float, perc_valid: float,
     validation, and testing according to the specified
     percentages. """
 
+    print("\nSPLIT DATA running...\n")
+
     # kyra's code below -- need to test
 
     x_train, x_val, x_test = np.split(
@@ -251,6 +275,8 @@ def design_matrix(ts_list: list, input_indices: list, rows: int, cols: int):
     series data and previous index. The length of
     ts_list and input_indices must be the same in order
     for the matrix to be produced. """
+
+    print("\nDESIGN MATRIX running...\n")
 
     if len(ts_list) != len(input_indices):
         return "Length of time series and input indices must be equal."
@@ -272,6 +298,8 @@ def ts2db(input_filename: str, perc_training: float,
     training, validation, and testing according to
     percentages, and converts to a database in the
     form of an output file. """
+
+    print("\nTS2DB running...\n")
 
     ts = read_from_file(input_filename)
     train, validate, test = split_data(
