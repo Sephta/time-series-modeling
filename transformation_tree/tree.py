@@ -20,7 +20,7 @@ import pickle
 
 # region Module Meta data
 __authors__ = "Alec Springel, Seth Tal"
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 __emails__ = "aspring6@uoregon.edu, stal@uoregon.edu"
 __credits__ = "Kyra Novitzky, Ronny Fuentes, Stephanie Schofield"
 __date__ = "01/23/2021"
@@ -347,7 +347,14 @@ class Pipeline():
                                 " object to build from.")
 
     def __repr__(self):
-        self.print()
+        # self.print()
+        result = ""
+        if self.operators:
+            result += "Pipeline:\n"
+            for i in range(len(self.operators)):
+                result += ("\t" + str(i + 1) + ". " +
+                           self.operators[i].__name__ + "\n")
+        return result
 
     def _generate(self, node: Node):
         """PRIVATE: Used to build the list of callables for this pipeline"""

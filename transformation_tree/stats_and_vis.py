@@ -26,7 +26,7 @@ from matplotlib import pyplot as plt
 
 
 __authors__ = "Ronny Fuentes"
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 __emails__ = "ronnyf@uoregon.edu"
 __credits__ = "Stephanie Schofield, Kyra Novitzky, Alec Springel, Seth Tal"
 __date__ = "01/21/2021"
