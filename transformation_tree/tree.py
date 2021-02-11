@@ -118,7 +118,11 @@ class TTree():
     def __repr__(self):
         """__repr__ allows us to define the default string representation
         of this class"""
-        self.print_tree(id=True)
+        ret = ""
+        for pre, null, node in RenderTree(self.root):
+            treestr = u"%s%s (%s)" % (pre, node.name, node.id)
+            ret += treestr.ljust(8) + "\n"
+        return ret
 
     def save(self, file: str):
         """Saves tree as serialized pickle object to specified file path"""
