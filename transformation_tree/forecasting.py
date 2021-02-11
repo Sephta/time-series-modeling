@@ -11,7 +11,7 @@ this software.
 """
 
 __authors__ = "Kyra Novitzky"
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 __emails__ = "knovitzk@uoregon.edu"
 __credits__ = "Alec Springel, Seth Tal, Ronny Fuentes, Stephanie Schofield"
 __date__ = "01/29/2021"

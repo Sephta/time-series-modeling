@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 import datetime as dt
 
 __authors__ = "Stephanie Schofield, Kyra Novitzky"
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 __emails__ = "sschofie@cs.uoregon.edu, knovitzk@uoregon.edu"
 __credits__ = "Ronny Fuentes, Alec Springel, Seth Tal"
 __date__ = "01/22/2021"

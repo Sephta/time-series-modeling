@@ -20,7 +20,7 @@ import pickle
 
 # region Module Meta data
 __authors__ = "Alec Springel, Seth Tal"
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 __emails__ = "aspring6@uoregon.edu, stal@uoregon.edu"
 __credits__ = "Kyra Novitzky, Ronny Fuentes, Stephanie Schofield"
 __date__ = "01/23/2021"
@@ -243,7 +243,7 @@ class TTree():
             else:
                 raise Exception("No nodes in path")
 
-    def add_newpath(self, target: Node, path: Union[Node, [Node]]):
+    def add_path(self, target: Node, path: Union[Node, [Node]]):
         """Builds a path starting with target node, and iterating through path,
         inserting these nodes as children of eachother
         (starting with target)"""
@@ -256,7 +256,7 @@ class TTree():
                                 "contained in the tree already.")
         self.__add_newpath_byref(target, path)
 
-    def add_newpath_byid(self, target_id: int, path: Union[Node, [Node]]):
+    def add_path_byid(self, target_id: int, path: Union[Node, [Node]]):
         """Similar to add_newpath, except finds target node by id."""
         if(type(path) is not list):  # Allows single node as parameter
             path = [path]
