@@ -1,4 +1,14 @@
-# Use and Examples
+# Use and Examples (User Docs)
+
+This file contains the major components of the transformation tree library as well as example uses.
+
+### Authors:
+
+CIS 422 @ University of Oregon  
+Team Bitwise  
+Ronny Fuentes, Kyra Novitzky, Stephanie Schofield, Alec Springel, Seth Tal
+
+Last modified February 10, 2021
 
 ## Setup
 

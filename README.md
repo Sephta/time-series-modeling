@@ -1,8 +1,8 @@
 # Transformation Tree Library
 
-This transformation tree library allows you to quickly build out possible modification paths for input data, and test various outcomes. The library also allows these pipelines and trees to be saved and loaded with ease.
+This transformation tree library allows you to quickly build out possible modification paths for input data, and test various outcomes. The library also allows these pipelines and trees to be saved and loaded with ease. The library provides four major modules to build out transformation trees and pipelines, as well as provided operators and visualization tools to help build a pipeline.
 
-Links: [User Documentation](https://github.com/Sephta/time-series-modeling/blob/main/docs/user.md),
+Links: [User Documentation](https://github.com/Sephta/time-series-modeling/blob/main/docs/user.md), [Developer Documentation](https://github.com/Sephta/time-series-modeling/blob/main/docs/dev.md), [Install Instructions](https://github.com/Sephta/time-series-modeling/blob/main/docs/install.md)
 
 ### Authors:
 
