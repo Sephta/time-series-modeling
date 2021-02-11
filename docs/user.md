@@ -73,14 +73,27 @@ from transformation_tree.tree import Pipeline
 
 ### Generating a tree
 
+Before creating a tree a special root method should be created to pass into the root node of the tree:
+
+```python
+from transformation_tree.preprocessing import read_from_file
+
+def root():
+    return read_from_file("./path/to/csv-data")
+```
+
+If you are using the operator functions built into the library the above method is how root should look. Otherwise you should design a root method such that it takes no arguements. If it does take arguements, then when pipelines in the tree execute, arguements will be fed to each function as a tuple.
+
+From here on out it is assumed this library is being used with operator functions built into the library. This means the "data" being fed through the tree will be assumed to be the csv data found in the [time_series_data](https://github.com/Sephta/time-series-modeling/tree/main/time_series_data "Time series data folder") folder.
+
 Each TTree is made up of individual nodes, which are initialized with a function. The TTree can then be initialized with a name and a root node:
 
 ```python
 from transformation_tree.tree import TTree, Node, Pipeline
 
 # load_data reads a CSV and returns the data as a list of numbers
-root = Node(load_data)
-tree = TTree("ExampleTree", root)
+rootNode = Node(root)  # root refers to the root method defined above
+tree = TTree("ExampleTree", rootNode)
 ```
 
 With the TTree initialized above, we can now define more nodes using operators from the library:
@@ -103,26 +116,26 @@ We can use references to nodes to add a path or a group of nodes as children.
 
 ```python
 # ADDING NODES AS CHILDREN:
-tree.add_nodes(root, node1)
-# OR adds multiple children to root:
-tree.add_nodes(root, [node1, node2, node3])
+tree.add_nodes(rootNode, node1)
+# OR adds multiple children to rootNode:
+tree.add_nodes(rootNode, [node1, node2, node3])
 
 # Adding a path:
 path = [node1, node2, node3]
 # The nodes will be added as children of one another (last in list will be a leaf node)
-tree.add_path(root, path)
+tree.add_path(rootNode, path)
 
 ```
 
 #### Adding nodes by ID
 
-ID's are automatically assigned to nodes when they are added to the tree. For instance, when a tree is initialized, the root will always be 0. We can then use these ID's to add additional nodes as children.
+ID's are automatically assigned to nodes when they are added to the tree. For instance, when a tree is initialized, the rootNode will always be 0. We can then use these ID's to add additional nodes as children.
 
 ```python
 # This will display ID's
 print(tree)
 
-# 0 is the root, adds nodes as children of root
+# 0 is the rootNode, adds nodes as children of rootNode
 tree.add_nodes_byid(0, [node1, node2, node3])
 
 # Add path by ID
@@ -140,7 +153,7 @@ tree.execute_tree()
 Pipelines in this library contain a list of functions that pass their output to the input of the next element. To generate pipelines from our tree:
 
 ```python
-# Uses the target node as the of the pipeline (builds up to the root)
+# Uses the target node as the of the pipeline (builds up to the rootNode)
 pipeline = tree.generate_pipeline(node3)
 
 # Using an ID:
