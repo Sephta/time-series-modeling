@@ -79,7 +79,14 @@ def split_data_test(csv_input_fname):
     """ Testing split_data """
 
     time_series = pre.read_from_file(csv_input_fname)
-    x, y, z = split_date(time_series, 0.6, 0.2, 0.2)
+    x, y, z = pre.split_date(time_series, 0.6, 0.2, 0.2)
+
+
+def assign_time_test(csv_input_fname):
+    """ Testing assign_time_test """
+
+    ts = pre.read_from_file(csv_input_fname)
+    pre.assign_time(ts, 0, 10)
 
 
 def pipeline(csv_input_fname):

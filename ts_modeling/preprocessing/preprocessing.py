@@ -163,10 +163,6 @@ def assign_time(ts, start, increment):
     return ts
 
 
-ts = read_from_file("Time Series Data/1_temperature_test.csv")
-assign_time(ts, 0, 10)
-
-
 def differences(ts):
     """ Returns a time series with magnitudes
     equivalent to the amount of space between
