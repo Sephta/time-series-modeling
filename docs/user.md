@@ -163,7 +163,7 @@ pipeline.execute()
 Finally, if we are happy with a pipeline or transformation tree, we can load and save them like so:
 
 ```python
-from transformation_tree.tree_utils import load_tree, load_pipeline
+from transformation_tree.tree import load_tree, load_pipeline
 
 tree.save("file/path")
 loaded = load_tree("file/path")
