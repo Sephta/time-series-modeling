@@ -137,8 +137,6 @@ def clip(ts, starting_date, final_date):
     """ Removes parts of the time series that
     fall outside of the start date and end date. """
 
-    # having issues with this because there are no
-    # dates in the data sets he uploaded
     return ts.between_time(starting_date, final_date, axis='index')
 
 
@@ -147,7 +145,6 @@ def assign_time(ts, start, increment):
     beginning with start time and separating times
     by the increment value. """
 
-    # series has no columns object ?
     col = ts.columns[len(ts.columns) - 1]
     assigned = pd.DataFrama(columns=["Date", "Val"])
     for num in ts.index:
@@ -267,7 +264,6 @@ def design_matrix(ts_list: list, input_indices: list, rows: int, cols: int):
     ts.index = input_indices
     temp = ts.to_numpy()
     matrix = temp.reshape(rows, cols)
-    print(matrix)
 
     return matrix
 
@@ -287,3 +283,11 @@ def ts2db(input_filename: str, perc_training: float,
     write_to_file(db, output_file_name)
 
     return db
+
+
+def main():
+    test_file = "Time Series Data/1_temperature_test.csv"
+
+
+if __name__ == '__main__':
+    main()
